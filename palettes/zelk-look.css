@@ -1,0 +1,27 @@
+
+/* ZELK look: gaps, extras (toggles defined in the source), selected-channel pill */
+body {
+    --gap: 10px;                     /* Zelk's 10px spacing between panels */
+
+    /* Zelk extras (defined in zelk-extras.css above) */
+    --zelk-toolbar: on;              /* rounded-square toolbar buttons */
+    --hide-scrollbars: on;
+    --hide-profile-notes: on;
+    --hide-profile-message-box: on;
+}
+
+/* selected channel / DM: Zelk's light-blue pill with dark text.
+   The repeated attribute selectors raise specificity so this beats the older
+   "selected = green" snippet if it is present (unread stays red from that snippet). */
+.visual-refresh [class*="modeSelected_"][class*="modeSelected_"] [class*="link_"],
+.visual-refresh [class*="modeSelected_"][class*="modeSelected_"]:hover [class*="link_"],
+.visual-refresh [class*="interactiveSelected_"][class*="interactiveSelected_"] {
+    background: var(--accent-1) !important;
+    border-radius: 8px;
+}
+.visual-refresh [class*="modeSelected_"][class*="modeSelected_"][class*="modeSelected_"] [class*="name_"],
+.visual-refresh [class*="modeSelected_"][class*="modeSelected_"][class*="modeSelected_"] [class*="icon_"],
+.visual-refresh [class*="interactiveSelected_"][class*="interactiveSelected_"] [class*="name_"],
+.visual-refresh [class*="interactiveSelected_"][class*="interactiveSelected_"] {
+    color: #0f2530 !important;
+}
