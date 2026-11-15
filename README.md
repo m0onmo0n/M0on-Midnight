@@ -1,5 +1,10 @@
 # m0on Midnight
 
+> **This repository ([M0on-Midnight](https://github.com/m0onmo0n/M0on-Midnight)) is the evolution of
+> [zelk_moon](https://github.com/m0onmo0n/zelk_moon) and
+> [Moon-midnight](https://github.com/m0onmo0n/Moon-midnight).** It replaces both: the Zelk look lives on as an
+> optional palette and look here, and the midnight theme is rebuilt on selectors that survive Discord updates.
+
 A customised [midnight-discord](https://github.com/refact0r/midnight-discord) theme with
 hash-free selectors (they keep working when Discord renames its generated class names),
 an optional horizontal server list, and an optional Zelk colour palette / look.
