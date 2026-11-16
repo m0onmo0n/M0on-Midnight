@@ -471,7 +471,7 @@ body {
     --font-code: var(--code-font), 'gg mono';
 }
 
-[class*='scroll'] {
+[class*="scroller_"] {
     will-change: scroll-position;
 }
 [class*="burstGlow_"] {
@@ -591,7 +591,7 @@ body {
         .scroller_8AE1Qq::-webkit-scrollbar-track {
             margin-bottom: calc(26px);
         }
-        [class*="chatContent_"]:has([class*="typing_"]) [class*="messagesWrapper_"]::before {
+        [class*="chatContent_"]:has(> [class*="form_"] > [class*="typing_"]) [class*="messagesWrapper_"]::before {
             content: '';
             position: absolute;
             bottom: 0;
@@ -2141,7 +2141,6 @@ button[aria-label="Apps"] {
 /* compact timestamps only on hover */
 [class*="timestamp"][class*="CompactTimeStamp"] {
   opacity: 0;
-  will-change: opacity;
 }
 [class*="messageListItem"] > [class*="message"]:hover [class*="timestamp"][class*="CompactTimeStamp"] {
   opacity: 1;
@@ -2162,7 +2161,8 @@ button[aria-label="Apps"] {
 [class*="panels_"] button:last-child [class*="contents_"], /* settings button */
 [class*="attachButtonInner_"], /* upload button */
 [class*="emojiButton_"] [class*="contents_"], /* emoji button */
-[class*="closeButton_"], /* settings exit button */
+[class*="closeButton_"]:not([class*="notice_"] *), /* modal close (not the banner X) */
+[class*="contentHeader_"] button[aria-label="Close"], /* settings exit button */
 [class*="contents_"] > [class*="closeIcon_"] /* modal close */ {
   transition: transform 1s ease;
 }
@@ -2174,7 +2174,8 @@ button[aria-label="Apps"] {
 [class*="panels_"] button:last-child:hover [class*="contents_"],
 [class*="attachButton_"]:hover [class*="attachButtonInner_"],
 [class*="emojiButton_"]:hover [class*="contents_"],
-[class*="closeButton_"]:hover,
+[class*="closeButton_"]:hover:not([class*="notice_"] *),
+[class*="contentHeader_"] button[aria-label="Close"]:hover,
 [class*="contents_"]:hover > [class*="closeIcon_"] {
   transform: rotate(360deg);
 }
