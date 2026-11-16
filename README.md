@@ -7,10 +7,10 @@ a dark, customizable discord theme with message cards, zelk colors and an option
 > this repository ([M0on-Midnight](https://github.com/m0onmo0n/M0on-Midnight)) is the evolution of
 > [zelk_moon](https://github.com/m0onmo0n/zelk_moon) and
 > [Moon-midnight](https://github.com/m0onmo0n/Moon-midnight). it replaces both: the zelk look lives on as an
-> optional palette and look here, and the midnight theme is rebuilt on selectors that survive discord updates.
+> optional palette and look here.
 
-built on [midnight-discord](https://github.com/refact0r/midnight-discord) by refact0r, with hash-free selectors
-(they keep working when discord renames its generated class names).
+built on [midnight-discord](https://github.com/refact0r/midnight-discord) by refact0r
+
 
 <img width=800 src="assets/flavors/midnight.png">
 
@@ -19,22 +19,25 @@ built on [midnight-discord](https://github.com/refact0r/midnight-discord) by ref
 ### vencord/equicord/betterdiscord (or any client that supports theme files)
 
 1. pick a flavor below and download its theme file from [`dist/`](dist/). (use the download button at the top right of the file page)
-2. drag the file into your theme folder. (there should be a button to open the theme folder in theme settings)
+2. drag the file into your theme folder.
 3. (optional) customize the theme by opening the file and editing the CSS variables within.
 
 load **one** file at a time.
 
 ### install through link
 
-add the link of your flavor to your theme import links, for example:
+add the link of your flavor to your theme import links (load one at a time):
 
-```
-https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight.theme.css
-```
+| flavor | vertical server list | horizontal server list |
+|---|---|---|
+| midnight | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight.theme.css` | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-hsl.theme.css` |
+| zelk colors | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-zelk-colors.theme.css` | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-zelk-colors-hsl.theme.css` |
+| zelk | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-zelk.theme.css` | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-zelk-hsl.theme.css` |
+| cards | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-cards.theme.css` | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-cards-hsl.theme.css` |
 
-use `cdn.jsdelivr.net`, not `raw.githubusercontent.com`: raw serves the file as plain text, which browsers refuse to apply as a
-stylesheet. jsdelivr caches for a few hours, so updates can take a while to show up. you will need to copy the theme variables
-to your quickcss in order to customize a linked theme.
+- jsdelivr caches for a few hours, so updates can take a while to show up. to stay on a fixed version, replace `@main` with a commit or
+  release tag (for example `@fed6760`).
+- you will need to copy the theme variables to your quickcss in order to customize a linked theme.
 
 ## flavors
 
