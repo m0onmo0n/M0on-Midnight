@@ -38,6 +38,26 @@ FLAVORS = {
     'cards':       ('-cards', 'Cards'),
 }
 
+# Theme header (name, description) for every (flavor, horizontal) variant. Everything else in the
+# header is shared, see HEADER below.
+HEADERS = {
+    ('midnight',    False): ('M0on Midnight',                  'Custom Midnight theme'),
+    ('midnight',    True):  ('M0on Midnight HSL',              'Custom Midnight theme + HSL'),
+    ('zelk-colors', False): ('M0on Midnight Zelk palette',     'Custom Midnight theme with Zelk Palette'),
+    ('zelk-colors', True):  ('M0on Midnight Zelk palette HSL', 'Custom Midnight theme with Zelk Palette + HSL'),
+    ('zelk',        False): ('M0on Zelk Midnight',             'Custom Midnight theme with Zelk theme features'),
+    ('zelk',        True):  ('M0on Zelk Midnight HSL',         'Custom Midnight theme with Zelk theme features + HSL'),
+    ('cards',       False): ('M0on Midnight Cards',            'Discord+ inspired cards with M0on midnight theme features'),
+    ('cards',       True):  ('M0on Midnight Cards HSL',        'Discord+ inspired cards with M0on midnight theme features and HSL'),
+}
+HEADER = """/**
+ * @name {name}
+ * @description {description}
+ * @author m0onmo0n
+ * @version 1
+ * @website https://github.com/m0onmo0n/M0on-Midnight
+*/"""
+
 # overlay files appended (in order) after the source for each flavor
 OVERLAYS = {
     'midnight':    [],
@@ -70,10 +90,10 @@ def build(flavor, hsl):
     if flavor == 'zelk':
         src = src.replace("--font: 'figtree';", "--font: 'Inter';", 1)
 
-    file_suffix, label = FLAVORS[flavor]
-    parts = [x for x in (label, 'horizontal server list' if hsl else None) if x]
-    name_suffix = f" ({', '.join(parts)})" if parts else ''
-    src = re.sub(r'(@name [^\n]*?)\s*\n', lambda m: m.group(1) + name_suffix + '\n', src, count=1)
+    file_suffix, _ = FLAVORS[flavor]
+    name, description = HEADERS[(flavor, hsl)]
+    header = HEADER.format(name=name, description=description)
+    src = header + src[src.index('*/') + 2:]  # swap the source's leading header comment
 
     out = src.rstrip() + '\n'
     for overlay in OVERLAYS[flavor] + (OVERLAYS_HSL.get(flavor, []) if hsl else []):

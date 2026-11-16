@@ -128,6 +128,10 @@ assets/                     preview screenshots (tools/make-thumbs.py makes the 
 - rainbow VC avatars (rainbowglow-avatars) is commented out at the top of the source (the speaking ring uses the accent colour). to enable it,
   uncomment the jsDelivr import. an `@import` only works before any other rule, so all imports stay at the top (`build.py` keeps them there).
 
+## license
+
+MIT, see [LICENSE](LICENSE). third-party code and credits are listed in [NOTICE](NOTICE).
+
 ## credits
 
 - [refact0r/midnight-discord](https://github.com/refact0r/midnight-discord): the base theme.

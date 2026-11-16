@@ -1,0 +1,78 @@
+M0on-Midnight: third-party notices
+==================================
+
+This project is licensed under the MIT license (see LICENSE). It is built on, and contains
+code from or modelled on, the projects below. Their copyright notices are reproduced here,
+as their licenses require.
+
+
+Included or derived code (MIT)
+------------------------------
+
+midnight-discord
+  https://github.com/refact0r/midnight-discord
+  Copyright (c) 2025 refact0r
+  The base theme. src/midnight.theme.css is derived from it.
+
+Zelk
+  https://github.com/schnensch0/zelk
+  Copyright (c) 2021-2022 schnensch
+  The Zelk colour palette and look (overlays/zelk.css, overlays/zelk-look.css) come from this theme.
+
+Discord+
+  https://github.com/PlusInsta/discord-plus
+  Copyright (c) 2025 Paulo Ødegård
+  The message cards, panel colours and title strip in overlays/cards.css follow the approach of
+  this theme.
+
+Each of the licenses above is the MIT license:
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+
+Loaded from the original source (not copied here)
+-------------------------------------------------
+
+Horizontal Server List
+  https://github.com/DiscordStyles/HorizontalServerList
+  Copyright (c) 2020 DiscordStyles (MIT)
+  The horizontal server list builds import it live from its own site.
+
+Inter (font)
+  https://rsms.me/inter/
+  Imported by the Zelk builds. Inter is licensed under the SIL Open Font License 1.1.
+
+Google Fonts (Figtree)
+  https://fonts.google.com/
+  Imported by every build.
+
+
+Credits (code used in the theme source, no license was found)
+------------------------------------------------------------
+
+"Discord Ui Tweaks" by Wolfy (a collection of snippets, including ones by sakgoyal, LuSaffi, hanyuko,
+  nexpId, MadelineMaid and Sessh; each is credited in a comment in the source).
+  Bundled in src/midnight.theme.css.
+
+"Unread msg and selected channel snippet" by Amnissya, shared in a theme support server.
+  Bundled in src/midnight.theme.css.
+
+rainbowglow-avatars by Wolfy (MEWPASCO)
+  https://github.com/MEWPASCO/rainbowglow-avatars
+  Its import is commented out in src/midnight.theme.css and is not part of any build.
