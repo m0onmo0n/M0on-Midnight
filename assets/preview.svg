@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1125" width="2000" height="1125" role="img" aria-label="m0on midnight: a dark, customizable discord theme">
+  <defs>
+    <linearGradient id="accent" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#000000"/>
+      <stop offset="0.33" stop-color="#00e5ff"/>
+      <stop offset="0.66" stop-color="#ff00ff"/>
+      <stop offset="1" stop-color="#ff1a1a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- backdrop -->
+  <rect width="2000" height="1125" fill="#14171b"/>
+
+  <!-- window -->
+  <rect x="102" y="94" width="1796" height="937" rx="56" fill="#1a1e23"/>
+
+  <!-- window controls -->
+  <circle cx="1753" cy="117" r="12" fill="#cfb341"/>
+  <circle cx="1796" cy="117" r="12" fill="#3fb07d"/>
+  <circle cx="1839" cy="117" r="12" fill="#d0405a"/>
+
+  <!-- server rail -->
+  <rect x="133" y="141" width="125" height="858" rx="40" fill="#101317"/>
+  <circle cx="195" cy="205" r="39" fill="#252a31"/>
+  <path d="M207 178a28 28 0 1 0 0 56 22 22 0 0 1 0-56z" fill="#00e5ff" opacity="0.85"/>
+  <circle cx="195" cy="310" r="39" fill="#20252b"/>
+  <circle cx="195" cy="415" r="39" fill="#20252b"/>
+  <circle cx="195" cy="521" r="39" fill="#20252b"/>
+  <circle cx="195" cy="627" r="39" fill="#20252b"/>
+  <circle cx="195" cy="732" r="39" fill="#20252b"/>
+  <circle cx="195" cy="837" r="39" fill="#20252b"/>
+  <circle cx="195" cy="935" r="39" fill="#20252b"/>
+
+  <!-- channel list -->
+  <rect x="289" y="141" width="313" height="725" rx="40" fill="#101317"/>
+  <rect x="328" y="179" width="130" height="24" rx="12" fill="#3a414b"/>
+  <rect x="328" y="265" width="156" height="24" rx="12" fill="#2a3038"/>
+  <rect x="328" y="325" width="156" height="24" rx="12" fill="#2a3038"/>
+  <rect x="328" y="381" width="156" height="24" rx="12" fill="#2a3038"/>
+
+  <!-- user panel -->
+  <rect x="289" y="898" width="313" height="101" rx="40" fill="#101317"/>
+  <circle cx="340" cy="949" r="27" fill="#2a3038"/>
+  <rect x="391" y="937" width="123" height="24" rx="12" fill="#3a414b"/>
+
+  <!-- chat -->
+  <rect x="633" y="141" width="898" height="858" rx="40" fill="#101317"/>
+  <rect x="672" y="179" width="132" height="24" rx="12" fill="#3a414b"/>
+  <circle cx="1364" cy="191" r="19" fill="#252a31"/>
+  <circle cx="1418" cy="191" r="19" fill="#252a31"/>
+  <circle cx="1473" cy="191" r="19" fill="#252a31"/>
+
+  <!-- title -->
+  <text x="672" y="462" font-family="'Outfit','Figtree','Segoe UI',Helvetica,Arial,sans-serif" font-weight="600" font-size="118" fill="#8b97ab">m0on midnight</text>
+  <text x="676" y="548" font-family="'Outfit','Figtree','Segoe UI',Helvetica,Arial,sans-serif" font-weight="500" font-size="48" fill="#6f7b90">A dark, customizable discord theme.</text>
+
+  <!-- message cards -->
+  <rect x="660" y="580" width="840" height="95" rx="20" fill="#171b20"/>
+  <circle cx="703" cy="627" r="31" fill="#2a3038"/>
+  <rect x="765" y="597" width="103" height="19" rx="9.5" fill="#3a414b"/>
+  <rect x="765" y="632" width="213" height="19" rx="9.5" fill="#2a3038"/>
+
+  <rect x="660" y="688" width="840" height="95" rx="20" fill="#171b20"/>
+  <circle cx="703" cy="719" r="31" fill="#2a3038"/>
+  <rect x="765" y="691" width="103" height="19" rx="9.5" fill="#3a414b"/>
+  <rect x="765" y="726" width="213" height="19" rx="9.5" fill="#2a3038"/>
+
+  <rect x="660" y="796" width="840" height="95" rx="20" fill="#171b20"/>
+  <circle cx="703" cy="812" r="31" fill="#2a3038"/>
+  <rect x="765" y="785" width="103" height="19" rx="9.5" fill="#3a414b"/>
+  <rect x="765" y="820" width="213" height="19" rx="9.5" fill="#2a3038"/>
+
+  <!-- message bar -->
+  <rect x="672" y="883" width="820" height="79" rx="26" fill="#1c2127"/>
+  <circle cx="715" cy="922" r="20" fill="#2a3038"/>
+  <circle cx="1340" cy="922" r="20" fill="#2a3038"/>
+  <circle cx="1394" cy="922" r="20" fill="#2a3038"/>
+  <circle cx="1449" cy="922" r="20" fill="#2a3038"/>
+
+  <!-- member list -->
+  <rect x="1563" y="141" width="305" height="858" rx="40" fill="#101317"/>
+  <rect x="1594" y="170" width="242" height="42" rx="14" fill="#1c2127"/>
+  <circle cx="1617" cy="273" r="22" fill="#252a31"/><rect x="1664" y="264" width="125" height="19" rx="9.5" fill="#3a414b"/>
+  <circle cx="1617" cy="343" r="22" fill="#252a31"/><rect x="1664" y="334" width="125" height="19" rx="9.5" fill="#3a414b"/>
+  <circle cx="1617" cy="413" r="22" fill="#252a31"/><rect x="1664" y="404" width="125" height="19" rx="9.5" fill="#3a414b"/>
+
+  <!-- accent strip: the cards gradient, plus the four flavor palettes as dots -->
+  <rect x="633" y="1000" width="898" height="6" rx="3" fill="url(#accent)"/>
+  <g transform="translate(1600 1000)">
+    <circle cx="0" cy="0" r="9" fill="#00bcd4"/>
+    <circle cx="30" cy="0" r="9" fill="#9cdeff"/>
+    <circle cx="60" cy="0" r="9" fill="#bde6fb"/>
+    <circle cx="90" cy="0" r="9" fill="#ff00ff"/>
+  </g>
+</svg>
