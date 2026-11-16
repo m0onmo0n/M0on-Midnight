@@ -5,6 +5,10 @@
    ===================================================================== */
 
 body {
+    /* hides Discord's built-in shadow fade above the message box (and the one under the chat header),
+       which shows up as a dark band against the gradient background */
+    --transparency-tweaks: on;
+
     /* user panel spans the full sidebar width (instead of the small panel under the channel list) */
     --small-user-panel: off;
 
@@ -101,4 +105,26 @@ body {
 [class*="systemBar_"][class*="bar_"],
 [class^="bar_"]:has(> [class^="title_"]) /* main window bar: bar_ theme-dark theme-darker images-dark */ {
     background: var(--bg-4) !important; /* same as the other panels */
+}
+
+/* Window title strip as its own island (the way Discord+ does it, see its "9 Titlebar" and
+   "3.2 Margins" sections): the strip gets rounded corners and the app content below it gets a
+   margin-top, which opens the gap. The content is the strip's later sibling. With the horizontal
+   server list, Gibbu's rule already sets that margin to the list's height (--serverlist-offset),
+   so the gap is added on top of it (the variable is undefined, i.e. 0, in the vertical files). */
+body {
+    --titlebar-gap: 10px; /* space between the title strip and the panels below it */
+}
+.visual-refresh [class^="bar_"]:has(> [class^="title_"]) {
+    border-radius: var(--radius-lg);
+}
+.visual-refresh [class^="bar_"]:has(> [class^="title_"]) ~ [class*="content_"] {
+    margin-top: calc(var(--serverlist-offset, 0px) + var(--titlebar-gap));
+}
+
+/* Discord's chat fade gradients (Discord+ clears these too) */
+.visual-refresh [class*="chatGradient_"],
+.visual-refresh [class*="chatGradientBase_"] {
+    background: transparent;
+    display: none;
 }

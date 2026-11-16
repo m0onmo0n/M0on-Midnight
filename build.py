@@ -46,6 +46,11 @@ OVERLAYS = {
     'cards':       ['overlays/cards.css'],
 }
 
+# extra overlay files appended only to the horizontal-server-list builds
+OVERLAYS_HSL = {
+    'cards':       ['overlays/cards-hsl.css'],
+}
+
 
 def build(flavor, hsl):
     src = read('src/midnight.theme.css')
@@ -71,7 +76,7 @@ def build(flavor, hsl):
     src = re.sub(r'(@name [^\n]*?)\s*\n', lambda m: m.group(1) + name_suffix + '\n', src, count=1)
 
     out = src.rstrip() + '\n'
-    for overlay in OVERLAYS[flavor]:
+    for overlay in OVERLAYS[flavor] + (OVERLAYS_HSL.get(flavor, []) if hsl else []):
         out += '\n' + read(overlay).strip() + '\n'
 
     name = f"midnight{file_suffix}{'-hsl' if hsl else ''}.theme.css"

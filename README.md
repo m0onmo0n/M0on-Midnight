@@ -109,6 +109,7 @@ src/midnight.theme.css      the full theme (source of truth)
 overlays/zelk.css           zelk colour palette only
 overlays/zelk-look.css      zelk gaps, extras and selected-channel pill
 overlays/cards.css          message cards, gradient background, plum panels, betterfolders fix
+overlays/cards-hsl.css      extra spacing for the cards flavor with the horizontal server list
 build.py                    builds every flavor x layout into dist/
 dist/                       generated themes (committed so they can be downloaded directly)
 assets/                     preview screenshots (tools/make-thumbs.py makes the thumbnails)

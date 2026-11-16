@@ -1,0 +1,14 @@
+
+/* Cards + horizontal server list only (appended by build.py after cards.css).
+   Gives the horizontal server list its own gap above the channel list and chat.
+   Gibbu's list is glued to the top edge of the content (it is rotated up out of the sidebar), so
+   the content moves down by one more gap and the list moves up by the same amount. */
+body {
+    --serverlist-gap: 10px; /* space between the horizontal server list and the panels below it */
+}
+.visual-refresh [class^="bar_"]:has(> [class^="title_"]) ~ [class*="content_"] {
+    margin-top: calc(var(--serverlist-offset) + var(--titlebar-gap) + var(--serverlist-gap));
+}
+.visual-refresh [class*="guilds_"] {
+    translate: 0 calc(-1 * var(--serverlist-gap));
+}
