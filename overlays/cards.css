@@ -1,0 +1,104 @@
+
+/* =====================================================================
+   CARDS look: Discord+-style message cards, gradient background, plum panel colours
+   (everything below is additive)
+   ===================================================================== */
+
+body {
+    /* user panel spans the full sidebar width (instead of the small panel under the channel list) */
+    --small-user-panel: off;
+
+    /* background: 45deg gradient, shown through gaps between panels */
+    --background-image: on;
+    --background-image-url: linear-gradient(45deg, black, cyan, magenta, red);
+
+    /* card look */
+    --card-radius: 10px;          /* corner rounding of message cards */
+    --card-gap: 8px;             /* space between message groups (Discord+ group spacing) */
+    --card-bg: hsla(320, 40%, 12%, 0.85);       /* card color */
+    --card-bg-hover: var(--bg-1); /* card color on hover */
+    --chat-panel-opacity: 87%;    /* how solid the chat panel behind the cards is (100% = opaque) */
+}
+
+.visual-refresh {
+    /* chat panel becomes see-through so the gradient shows between cards */
+    [class*="chatContent_"] {
+        background-color: color-mix(in srgb, var(--background-base-lower) var(--chat-panel-opacity), transparent);
+    }
+
+    /* each message is a card slice */
+    [class*="messageListItem_"] [class*="message_"] {
+        background: var(--card-bg);
+        border-radius: 0;
+        margin-left: 0;
+        transition: background-color 0.15s ease;
+    }
+    [class*="messageListItem_"]:hover [class*="message_"] {
+        background: var(--card-bg-hover);
+    }
+
+    /* gap before a new group (not after a date/unread divider) */
+    :not([class*="divider_"]) + [class*="messageListItem_"]:has([class*="groupStart_"]) {
+        margin-top: var(--card-gap);
+    }
+
+    /* first message of a group: round the top */
+    [class*="messageListItem_"]:has([class*="groupStart_"]) [class*="message_"],
+    [class*="divider_"] + [class*="messageListItem_"] [class*="message_"] {
+        border-radius: var(--card-radius) var(--card-radius) 0 0;
+    }
+
+    /* last message of a group: round the bottom */
+    [class*="messageListItem_"]:has(+ [class*="messageListItem_"] [class*="groupStart_"],
+                                    + [class*="divider_"],
+                                    + [class*="scrollerSpacer_"]) [class*="message_"] {
+        border-radius: 0 0 var(--card-radius) var(--card-radius);
+    }
+
+    /* single-message group: round everything */
+    [class*="messageListItem_"]:has([class*="groupStart_"]):has(+ [class*="messageListItem_"] [class*="groupStart_"],
+                                    + [class*="divider_"],
+                                    + [class*="scrollerSpacer_"]) [class*="message_"] {
+        border-radius: var(--card-radius);
+    }
+}
+
+/* =====================================================================
+   BetterFolders compatibility (Vencord plugin)
+   The plugin adds .vc-betterFolders-sidebar-grid to the app grid and
+   places its folder sidebar in a "betterFoldersSidebar" grid area.
+   The theme's "small user panel" rule redefines grid-template-areas
+   without that area, which breaks the plugin. This restores it.
+   ===================================================================== */
+@container body style(--small-user-panel: on) {
+    .visual-refresh [class*="base_"].vc-betterFolders-sidebar-grid {
+        grid-template-areas:
+            'titleBar titleBar titleBar titleBar'
+            'guildsList betterFoldersSidebar notice notice'
+            'guildsList betterFoldersSidebar channelsList page'
+            'guildsList betterFoldersSidebar userPanel page';
+    }
+}
+.visual-refresh .vc-betterFolders-sidebar {
+    grid-area: betterFoldersSidebar;
+}
+
+/* =====================================================================
+   Discord+ panel colors (top bar, channel list, user panel, popouts...)
+   Discord+ colors every panel with the same translucent plum:
+   hsla(320, 50%, 2.5%, 0.8). Our panels use --bg-4 (main) and --bg-3
+   (floating/secondary), so remapping those two matches the look.
+   ===================================================================== */
+:root {
+    --bg-4: hsla(320, 50%, 2.5%, 0.8); /* panels: top bar, channel list, server list, user panel */
+    --bg-3: hsla(320, 50%, 5%, 0.9);   /* popouts, tooltips, secondary elements */
+}
+
+/* Window title strip (the "Direct Messages" bar with the window buttons).
+   Class chain: bar_ systemBar_ fixed_ > trailing_ > winButtons_.
+   Gives it the same plum as the other panels (Discord+ look). Delete this
+   rule to let the gradient show through it again. */
+[class*="systemBar_"][class*="bar_"],
+[class^="bar_"]:has(> [class^="title_"]) /* main window bar: bar_ theme-dark theme-darker images-dark */ {
+    background: var(--bg-4) !important; /* same as the other panels */
+}

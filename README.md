@@ -11,14 +11,19 @@ an optional horizontal server list, and an optional Zelk colour palette / look.
 
 ## Pick a file from `dist/`
 
-| | Midnight colours | Zelk colours | Zelk colours + look |
-|---|---|---|---|
-| **Vertical server list** | `midnight.theme.css` | `midnight-zelk-colors.theme.css` | `midnight-zelk.theme.css` |
-| **Horizontal server list** | `midnight-hsl.theme.css` | `midnight-zelk-colors-hsl.theme.css` | `midnight-zelk-hsl.theme.css` |
+| | Midnight colours | Zelk colours | Zelk colours + look | Cards |
+|---|---|---|---|---|
+| **Vertical server list** | `midnight.theme.css` | `midnight-zelk-colors.theme.css` | `midnight-zelk.theme.css` | `midnight-cards.theme.css` |
+| **Horizontal server list** | `midnight-hsl.theme.css` | `midnight-zelk-colors-hsl.theme.css` | `midnight-zelk-hsl.theme.css` | `midnight-cards-hsl.theme.css` |
 
 - **Zelk colours**: only the palette (Zelk's blue-green hue, midnight's darker lightness steps).
 - **Zelk colours + look**: the palette plus Zelk's 10px gaps, Inter font, rounded toolbar buttons,
   hidden scrollbars / profile notes / profile message box, and the light-blue selected-channel pill.
+- **Cards**: Discord+-style message separation (each message group is a rounded card), a black / cyan /
+  magenta / red 45° gradient background, Discord+'s translucent plum panel colours (including the window
+  title strip), the full-width user panel, and a [BetterFolders](https://github.com/Vendicated/Vencord/tree/main/src/plugins/betterFolders)
+  compatibility fix. Tweak it with `--card-radius`, `--card-gap`, `--card-bg`, `--card-bg-hover` and
+  `--chat-panel-opacity` at the top of `overlays/cards.css`.
 - **Horizontal server list**: adds [Gibbu's Horizontal Server List](https://github.com/DiscordStyles/HorizontalServerList),
   imported live so it keeps updating.
 
@@ -28,15 +33,16 @@ Load **one** file. Copy it to your client's themes folder (BetterDiscord / Venco
 
 ```
 src/midnight.theme.css      the full theme (source of truth)
-palettes/zelk.css           Zelk colour palette only
-palettes/zelk-look.css      Zelk gaps, extras and selected-channel pill
-build.py                    builds the six files in dist/
+overlays/zelk.css           Zelk colour palette only
+overlays/zelk-look.css      Zelk gaps, extras and selected-channel pill
+overlays/cards.css          message cards, gradient background, plum panels, BetterFolders fix
+build.py                    builds the eight files in dist/
 dist/                       generated themes (committed so they can be downloaded directly)
 ```
 
 ## Editing
 
-Edit `src/midnight.theme.css` (or the files in `palettes/`), then rebuild:
+Edit `src/midnight.theme.css` (or the files in `overlays/`), then rebuild:
 
 ```bash
 python build.py

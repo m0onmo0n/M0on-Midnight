@@ -4,14 +4,16 @@
     python build.py
 
 Source of truth:  src/midnight.theme.css          (the full midnight theme)
-Palettes:         palettes/zelk.css               (Zelk colors only)
-                  palettes/zelk-look.css          (Zelk gaps, extras, selected pill)
+Overlays:         overlays/zelk.css               (Zelk colors only)
+                  overlays/zelk-look.css          (Zelk gaps, extras, selected pill)
+                  overlays/cards.css              (message cards, gradient, plum panels, BetterFolders fix)
 
-Variants (2 layouts x 3 flavors = 6 files):
+Variants (2 layouts x 4 flavors = 8 files):
     layout:  vertical server list (default) | horizontal server list (-hsl)
     flavor:  midnight (original palette)    -> midnight[-hsl].theme.css
              zelk-colors (Zelk palette)     -> midnight-zelk-colors[-hsl].theme.css
              zelk (Zelk palette + look)     -> midnight-zelk[-hsl].theme.css
+             cards (cards look + plum)      -> midnight-cards[-hsl].theme.css
 """
 import re
 from pathlib import Path
@@ -33,6 +35,15 @@ FLAVORS = {
     'midnight':    ('', None),
     'zelk-colors': ('-zelk-colors', 'Zelk colors'),
     'zelk':        ('-zelk', 'Zelk'),
+    'cards':       ('-cards', 'Cards'),
+}
+
+# overlay files appended (in order) after the source for each flavor
+OVERLAYS = {
+    'midnight':    [],
+    'zelk-colors': ['overlays/zelk.css'],
+    'zelk':        ['overlays/zelk.css', 'overlays/zelk-look.css'],
+    'cards':       ['overlays/cards.css'],
 }
 
 
@@ -60,10 +71,8 @@ def build(flavor, hsl):
     src = re.sub(r'(@name [^\n]*?)\s*\n', lambda m: m.group(1) + name_suffix + '\n', src, count=1)
 
     out = src.rstrip() + '\n'
-    if flavor in ('zelk-colors', 'zelk'):
-        out += '\n/* ZELK palette */\n' + read('palettes/zelk.css').strip() + '\n'
-    if flavor == 'zelk':
-        out += read('palettes/zelk-look.css').rstrip() + '\n'
+    for overlay in OVERLAYS[flavor]:
+        out += '\n' + read(overlay).strip() + '\n'
 
     name = f"midnight{file_suffix}{'-hsl' if hsl else ''}.theme.css"
     (ROOT / 'dist').mkdir(exist_ok=True)
