@@ -1165,7 +1165,7 @@ body {
             background-color: var(--text-2) !important;
         }
 
-        [class*="badge_"]:not(img):not([class*="messageBadge_"]) /* shop "orbs exclusive" badge (not server-tag icon) */ {
+        [class*="shop_"] [class*="badge_"]:not(img) /* shop "orbs exclusive" badge, only inside the shop (it was also hitting voice-list and server-tag badges) */ {
             background-color: var(--text-1);
         }
 
@@ -1900,10 +1900,11 @@ body {
 
 
 /* === Collapse Icon Left (by sakgoyal) === */
-[class*="containerDefault_"] > div {
+/* not the voice user list (list_): it needs Discord's own 38px indent, 0.5em put the users 30px too far left */
+[class*="containerDefault_"] > div:not([class*="list_"]) {
   padding-left: 0.5em;
 }
-[class*="containerDefault_"] > div > div {
+[class*="containerDefault_"] > div:not([class*="list_"]) > div {
   display: flex;
   justify-content: start !important;
   flex-direction: row-reverse !important;
