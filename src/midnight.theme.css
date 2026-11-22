@@ -2075,6 +2075,30 @@ button[aria-label="Apps"] {
 
 }
 
+/*=============================================*/
+        /* server pill colours (needs the ServerPillColorizer plugin) */
+/* The plugin stamps data-server-unread="unread|ping|both" on server/folder list items.
+   Without the plugin these rules match nothing. Same palette as the channel list above:
+   red = unread, yellow = ping, red + yellow = both. */
+:root {
+    --server-pill-unread: #cd664c;
+    --server-pill-ping: #e0b64f;
+    --server-pill-selected: #89b482;
+}
+/* selected server = green (same as the selected channel); unread/ping below still win via specificity */
+:where([class*="listItem_"]:has([aria-selected="true"])) > [aria-hidden="true"] > [class*="item_"] {
+    background: var(--server-pill-selected) !important;
+}
+[data-server-unread="unread"] > [aria-hidden="true"] > [class*="item_"] {
+    background: var(--server-pill-unread) !important;
+}
+[data-server-unread="ping"] > [aria-hidden="true"] > [class*="item_"] {
+    background: var(--server-pill-ping) !important;
+}
+[data-server-unread="both"] > [aria-hidden="true"] > [class*="item_"] {
+    background: linear-gradient(to bottom, var(--server-pill-ping) 50%, var(--server-pill-unread) 50%) !important;
+}
+
 /* ===== merged from quick-css.stable.css ===== */
 [class*="cozy_"] [class*="messageContent_"] {
   padding-top: 1px;
