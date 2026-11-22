@@ -2079,10 +2079,21 @@ button[aria-label="Apps"] {
 }
 
 /*=============================================*/
+        /* ping colour: server channels where you were mentioned (unread stays red, open stays green; DMs stay red) */
+/* Adapted from Sky Guy 1's variant. Server channels use Discord's own mention badge, no plugin needed. */
+:root {
+    --ping-colour: var(--yellow-2);
+}
+/* server channels */
+[class*="containerDefault_"] [class*="wrapper_"]:not([class*="modeSelected_"]):has([class*="numberBadge_"]) [class*="name_"],
+[class*="containerDefault_"] [class*="wrapper_"]:not([class*="modeSelected_"]):has([class*="numberBadge_"]) [class*="icon_"] {
+    color: var(--ping-colour) !important;
+}
+/*=============================================*/
         /* server pill colours (needs the ServerPillColorizer plugin) */
-/* The plugin stamps data-server-unread="unread|ping|both" on server/folder list items.
+/* The plugin stamps data-server-unread="unread|ping" on server/folder list items.
    Without the plugin these rules match nothing. Same palette as the channel list above:
-   red = unread, yellow = ping, red + yellow = both. */
+   red = unread, yellow = ping (ping wins). */
 :root {
     --server-pill-unread: #cd664c;
     --server-pill-ping: #e0b64f;
@@ -2097,9 +2108,6 @@ button[aria-label="Apps"] {
 }
 [data-server-unread="ping"] > [aria-hidden="true"] > [class*="item_"] {
     background: var(--server-pill-ping) !important;
-}
-[data-server-unread="both"] > [aria-hidden="true"] > [class*="item_"] {
-    background: linear-gradient(to bottom, var(--server-pill-ping) 50%, var(--server-pill-unread) 50%) !important;
 }
 
 /* ===== merged from quick-css.stable.css ===== */
