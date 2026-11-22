@@ -70,6 +70,12 @@ Credits (code used in the theme source, no license was found)
   nexpId, MadelineMaid and Sessh; each is credited in a comment in the source).
   Bundled in src/midnight.theme.css.
 
+Sky Guy 1
+  The colour changes and extras in overlays/sky.css (the sky flavor) come from Sky Guy 1's customised
+  version of this theme. The server pill / DM ping colouring (the data-server-unread and data-dm-ping
+  rules in src/midnight.theme.css, the ping colour for channels) is based on the ServerPillColorizer and
+  DmPingHighlighter plugins and the matching styles they wrote. No license was found.
+
 "Unread msg and selected channel snippet" by Amnissya, shared in a theme support server.
   Bundled in src/midnight.theme.css.
 

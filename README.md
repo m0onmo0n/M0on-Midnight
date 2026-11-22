@@ -34,6 +34,7 @@ add the link of your flavor to your theme import links (load one at a time):
 | zelk colors | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-zelk-colors.theme.css` | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-zelk-colors-hsl.theme.css` |
 | zelk | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-zelk.theme.css` | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-zelk-hsl.theme.css` |
 | cards | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-cards.theme.css` | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-cards-hsl.theme.css` |
+| sky | `https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@main/dist/midnight-sky.theme.css` | (vertical only) |
 
 - jsdelivr caches for a few hours, so updates can take a while to show up. to stay on a fixed version, replace `@main` with a commit or
   release tag (for example `@fed6760`).
@@ -43,7 +44,7 @@ add the link of your flavor to your theme import links (load one at a time):
 
 flavors are preset looks for the theme. every flavor comes in two layouts: the normal **vertical** server list and a
 **horizontal** server list at the top (adds [Gibbu's Horizontal Server List](https://github.com/DiscordStyles/HorizontalServerList),
-imported live so it keeps updating).
+imported live so it keeps updating). the sky flavor only comes in the vertical layout.
 
 click a layout link to open that theme file, or click a preview image to view the full screenshot.
 
@@ -80,6 +81,14 @@ click a layout link to open that theme file, or click a preview image to view th
             <sub>previews: <a href="assets/flavors/cards.png">vertical</a> · <a href="assets/flavors/cards-hsl.png">horizontal</a> · <a href="assets/flavors/cards-settings.png">settings</a></sub>
         </td>
     </tr>
+    <tr>
+        <td width="50%">
+            <b>sky</b><br>
+            <a href="dist/midnight-sky.theme.css">vertical</a> (no horizontal version)<br>
+            the cards flavor with Sky Guy 1's colours and extras: darker panels, a different gradient, a red window frame, yellow ping accents, large chat avatars, hidden scrollbars and muted-channel colours. needs the normal (cozy) message layout, not compact.
+        </td>
+        <td width="50%"></td>
+    </tr>
 </table>
 
 ## options
@@ -94,9 +103,16 @@ everything is a variable in the theme file. a few useful ones:
 | `--card-radius`, `--card-gap`, `--card-bg`, `--card-bg-hover`, `--chat-panel-opacity` | message card look (cards flavor) |
 | `--HSL-server-direction`, `--HSL-server-alignment` | horizontal server list layout (horizontal files only) |
 
+## server pill and ping colours
+
+the theme colours unread and mentions: red = unread, yellow = ping (ping wins), green = the channel or server you have open. server
+channels use Discord's own mention badge. the server list pills and the DM list need the **ServerPillColorizer** Vencord/Equicord
+plugin, which stamps `data-server-unread` and `data-dm-ping` onto the elements. without the plugin those rules simply match nothing.
+the plugin is not part of this repo. custom plugins need a source build of Equicord/Vencord (put the plugin in `src/userplugins/`).
+
 ## contributing
 
-edit `src/midnight.theme.css` (or the files in `overlays/`), then rebuild the eight files in `dist/`:
+edit `src/midnight.theme.css` (or the files in `overlays/`), then rebuild the files in `dist/`:
 
 ```bash
 python build.py
@@ -110,6 +126,7 @@ overlays/zelk.css           zelk colour palette only
 overlays/zelk-look.css      zelk gaps, extras and selected-channel pill
 overlays/cards.css          message cards, gradient background, plum panels, betterfolders fix
 overlays/cards-hsl.css      extra spacing for the cards flavor with the horizontal server list
+overlays/sky.css            sky flavor: Sky Guy 1's colours and extras, on top of cards.css (vertical only)
 build.py                    builds every flavor x layout into dist/
 dist/                       generated themes (committed so they can be downloaded directly)
 assets/                     preview screenshots (tools/make-thumbs.py makes the thumbnails)
@@ -136,6 +153,8 @@ MIT, see [LICENSE](LICENSE). third-party code and credits are listed in [NOTICE]
 
 - [refact0r/midnight-discord](https://github.com/refact0r/midnight-discord): the base theme.
 - [schnensch0/zelk](https://github.com/schnensch0/zelk): the original zelk theme the palette and look come from.
+- Sky Guy 1: the sky flavor's colours and extras, and the original ServerPillColorizer and DmPingHighlighter plugins the ping
+  colours are built on.
 - [Gibbu / DiscordStyles](https://github.com/DiscordStyles/HorizontalServerList): horizontal server list.
 - [MEWPASCO/rainbowglow-avatars](https://github.com/MEWPASCO/rainbowglow-avatars) and the
   "unread msg and selected channel snippet" by Amnissya: snippets bundled in the source.

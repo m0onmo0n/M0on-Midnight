@@ -1,0 +1,378 @@
+/* =====================================================================
+   SKY flavor: cards + Sky Guy 1's colour changes and extras.
+   Appended after overlays/cards.css, so everything here overrides it.
+   Server pill and DM ping colours come from the base theme (they need the
+   ServerPillColorizer plugin). Ported from Sky's variant file.
+   ===================================================================== */
+
+/* palette: darker, more transparent panels, calmer hover */
+:root {
+    --bg-1: hsla(221, 16%, 20%, 0.5); /* dark buttons when clicked */
+    --bg-2: hsla(0, 0%, 0%, 0.75); /* dark buttons */
+    --bg-3: hsl(223, 17%, 8%); /* spacing, secondary elements */
+    --bg-4: rgba(0, 0, 0, 0.75); /* main background color */
+    --hover: hsl(231, 20%, 40%); /* channels and buttons when hovered */
+    --message-hover: hsla(220, 0%, 0%, 0.3); /* messages when hovered */
+    --status-speaking: var(--green-2); /* speaking ring */
+}
+
+body {
+    --small-avatars: off; /* this flavor has its own large avatars below */
+    --custom-window-controls: off;
+
+    /* cards: Sky's gradient, solid card colour, see-through chat panel */
+    --background-image-url: linear-gradient(315deg, black, rgb(0, 155, 155), rgb(155, 0, 155), red);
+    --card-gap: 10px;
+    --card-bg: var(--bg-2);
+    --chat-panel-opacity: 55%;
+}
+
+/* ping/reply accents are yellow instead of the accent colour */
+.visual-refresh {
+    [class*="colorPickerSwatch_"][style="background-color: rgb(88, 101, 242);"],
+    [class*="newBadge_"],
+    [class*="mentioned_"]:before,
+    [class*="replying_"]:before {
+        background-color: var(--yellow-2) !important;
+    }
+    /* unread divider, unread bar and its button are red */
+    .divider_SY_P2T {
+        --divider-color: var(--red-2);
+    }
+    [class*="newMessagesBar_"] {
+        background-color: var(--red-3);
+    }
+    [class*="barButtonAlt_"] {
+        --button-secondary-background: var(--red-3);
+        --button-secondary-background-hover: var(--red-4);
+    }
+}
+
+/* Custom message hover background */
+.visual-refresh [class*="message_"]:hover {
+    background-color: var(--message-hover) !important;
+}
+
+/* Window title strip (the "Direct Messages" bar with the window buttons).
+   Class chain: bar_ systemBar_ fixed_ > trailing_ > winButtons_.
+   Gives it the same plum as the other panels (Discord+ look). Delete this
+   rule to let the gradient show through it again. */
+[class*="systemBar_"][class*="bar_"],
+[class^="bar_"]:has(> [class^="title_"]) /* main window bar: bar_ theme-dark theme-darker images-dark */ {
+    background: var(--bg-4) !important; /* same as the other panels */
+}
+
+/* Window title strip as its own floating island matching all other panels */
+body {
+    --titlebar-gap: 6px; /* matches --gap (6px) around all other panels */
+}
+.visual-refresh [class^="bar_"]:has(> [class^="title_"]) {
+    margin: var(--titlebar-gap) var(--titlebar-gap) 0 var(--titlebar-gap) !important;
+    width: calc(100% - (var(--titlebar-gap) * 2)) !important;
+    border-radius: var(--radius-lg) !important;
+    border: var(--border-thickness) solid var(--border-subtle) !important;
+    box-sizing: border-box !important;
+    transition: border-color var(--border-hover-transition);
+}
+.visual-refresh [class^="bar_"]:has(> [class^="title_"]):hover {
+    border-color: var(--border-hover);
+}
+.visual-refresh [class^="bar_"]:has(> [class^="title_"]) ~ [class*="content_"] {
+    margin-top: calc(var(--serverlist-offset, 0px) + (var(--titlebar-gap) * 2)) !important;
+}
+
+
+/* Discord's chat fade gradients (Discord+ clears these too) */
+.visual-refresh [class*="chatGradient_"],
+.visual-refresh [class*="chatGradientBase_"] {
+    background: transparent;
+    display: none;
+}
+
+/* Turn unread bar yellow ONLY if there is an unread ping/reply after the NEW divider, or an active ping badge on the selected channel */
+.visual-refresh [class*="base_"]:has(
+    [class*="messagesWrapper_"] [class*="divider_"][class*="isUnread_"] ~ [class*="messageListItem_"] [class*="mentioned_"],
+    [class*="modeSelected_"] [class*="numberBadge_"]
+) [class*="newMessagesBar_"] {
+    background-color: var(--yellow-3);
+}
+
+.visual-refresh [class*="base_"]:has(
+    [class*="messagesWrapper_"] [class*="divider_"][class*="isUnread_"] ~ [class*="messageListItem_"] [class*="mentioned_"],
+    [class*="modeSelected_"] [class*="numberBadge_"]
+) [class*="barButtonAlt_"] {
+    --button-secondary-background: var(--yellow-3);
+    --button-secondary-background-hover: var(--yellow-4);
+}
+
+/* Turn the NEW divider line yellow when an unread ping/reply is present */
+.visual-refresh [class*="messagesWrapper_"]:has([class*="divider_"][class*="isUnread_"] ~ [class*="messageListItem_"] [class*="mentioned_"]) [class*="divider_"][class*="isUnread_"] {
+    --divider-color: var(--yellow-2);
+}
+
+/* Sleek scrollbars everywhere: hidden at rest, thin on panel hover, thick on scrollbar hover */
+.visual-refresh [class*="scroller_"]::-webkit-scrollbar,
+.visual-refresh [class*="scrollerBase_"]::-webkit-scrollbar {
+    width: 12px; /* reserves space so content doesn't jump when thickening */
+}
+
+.visual-refresh [class*="scroller_"]::-webkit-scrollbar-track,
+.visual-refresh [class*="scrollerBase_"]::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.visual-refresh [class*="scroller_"]::-webkit-scrollbar-thumb,
+.visual-refresh [class*="scrollerBase_"]::-webkit-scrollbar-thumb {
+    background-color: transparent; /* hidden until you hover over the panel */
+    border-radius: 99px;
+    border: 4px solid transparent; /* makes the visible thumb 4px thin (12px - 4px - 4px) */
+    background-clip: content-box;
+}
+
+/* Thin cyan scrollbar when hovering over any scrollable panel */
+.visual-refresh [class*="scroller_"]:hover::-webkit-scrollbar-thumb,
+.visual-refresh [class*="scrollerBase_"]:hover::-webkit-scrollbar-thumb {
+    background-color: var(--accent-2);
+}
+
+/* Thick bright cyan scrollbar when hovering directly over the scrollbar itself */
+.visual-refresh [class*="scroller_"]::-webkit-scrollbar-thumb:hover,
+.visual-refresh [class*="scrollerBase_"]::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-1);
+    border: 2px solid transparent; /* expands visible thumb to 8px thick (12px - 2px - 2px) */
+}
+
+/* =====================================================================
+   Larger Chat Avatars (Breathing room for ping bar + no bottom clipping)
+   ===================================================================== */
+body {
+    --chat-avatar-size: 64px; /* Discord default is 40px */
+    --chat-avatar-radius: 50%; /* 50% = circle, 20% = rounded square */
+    --chat-avatar-left: 14px;  /* increased from 10px to give yellow ping bar room */
+    --chat-avatar-top: 8px;    /* vertical distance from top edge on normal cards */
+    --chat-reply-offset: 20px; /* extra downward shift when a reply header is present */
+}
+
+.visual-refresh {
+    /* Resize and anchor the chat avatar cleanly at top-left on normal messages */
+    [class*="messageListItem_"] [class*="avatar_"] {
+        width: var(--chat-avatar-size) !important;
+        height: var(--chat-avatar-size) !important;
+        border-radius: var(--chat-avatar-radius) !important;
+        left: var(--chat-avatar-left) !important;
+        top: var(--chat-avatar-top) !important;
+        margin-top: 0 !important;
+    }
+
+    /* Resize and align any avatar decoration ring around the 64px avatar */
+    [class*="messageListItem_"] [class*="avatarDecoration_"] {
+        width: calc(var(--chat-avatar-size) * 1.2) !important;
+        height: calc(var(--chat-avatar-size) * 1.2) !important;
+        left: calc(var(--chat-avatar-left) - (var(--chat-avatar-size) * 0.1)) !important;
+        top: calc(var(--chat-avatar-top) - (var(--chat-avatar-size) * 0.1)) !important;
+        margin-top: 0 !important;
+    }
+
+    /* Shift avatar & decoration down when the message is a reply so the 'L' line shows */
+    [class*="messageListItem_"]:has([class*="repliedMessage_"]) [class*="avatar_"] {
+        top: calc(var(--chat-avatar-top) + var(--chat-reply-offset)) !important;
+    }
+
+    [class*="messageListItem_"]:has([class*="repliedMessage_"]) [class*="avatarDecoration_"] {
+        top: calc(var(--chat-avatar-top) + var(--chat-reply-offset) - (var(--chat-avatar-size) * 0.1)) !important;
+    }
+
+    /* Shift message text and header evenly to match the new 14px avatar position */
+    [class*="messageListItem_"] [class*="cozy_"] {
+        padding-left: calc(var(--chat-avatar-left) + var(--chat-avatar-size) + 14px) !important;
+    }
+
+    /* 1. Standalone 1-message cards: full 80px min-height */
+    [class*="messageListItem_"]:has([class*="groupStart_"]):has(
+        + [class*="messageListItem_"] [class*="groupStart_"],
+        + [class*="divider_"],
+        + [class*="scrollerSpacer_"]
+    ) [class*="cozy_"] {
+        min-height: calc(var(--chat-avatar-size) + (var(--chat-avatar-top) * 2)) !important;
+    }
+
+    /* 2. Standalone 1-message REPLY cards: full 100px min-height */
+    [class*="messageListItem_"]:has([class*="groupStart_"]):has([class*="repliedMessage_"]):has(
+        + [class*="messageListItem_"] [class*="groupStart_"],
+        + [class*="divider_"],
+        + [class*="scrollerSpacer_"]
+    ) [class*="cozy_"] {
+        min-height: calc(var(--chat-avatar-size) + (var(--chat-avatar-top) * 2) + var(--chat-reply-offset)) !important;
+    }
+
+    /* 3. Short 2-message cards (like 'hi' + 'how are'): add subtle bottom padding to the 2nd message so the avatar never clips */
+    [class*="messageListItem_"]:has([class*="groupStart_"]) + [class*="messageListItem_"]:not(:has([class*="groupStart_"])):has(
+        + [class*="messageListItem_"] [class*="groupStart_"],
+        + [class*="divider_"],
+        + [class*="scrollerSpacer_"]
+    ) [class*="cozy_"] {
+        padding-bottom: 10px !important;
+    }
+}
+
+/* =====================================================================
+   Match GameActivityToggle disabled state to Mute/Deafen dark pill style
+   ===================================================================== */
+.visual-refresh [class*="panels_"] button:has(mask#gameActivityMask) {
+    --status-danger: #d83a42 !important;
+    background-color: rgba(0, 0, 0, 0.16) !important;
+    border-radius: var(--radius-sm) !important;
+    transition: background-color 0.15s ease;
+}
+
+.visual-refresh [class*="panels_"] button:has(mask#gameActivityMask):hover {
+    background-color: rgba(0, 0, 0, 0.28) !important;
+}
+
+/* =====================================================================
+   Add top breathing room inside both server list & BetterFolders islands
+   ===================================================================== */
+body {
+    --server-column-top-padding: 8px; /* increase or decrease to adjust drop */
+}
+
+.visual-refresh {
+    /* Main server list column (DMs icon, Favorites, folders) */
+    [class*="guilds_"] [class*="scroller_"] {
+        padding-top: var(--server-column-top-padding) !important;
+    }
+
+    /* BetterFolders expanded sidebar column */
+    .vc-betterFolders-sidebar [class*="scroller_"] {
+        padding-top: var(--server-column-top-padding) !important;
+    }
+}
+
+/* =====================================================================
+   2. Muted channel & DM states (idle vs. actively viewing)
+   ===================================================================== */
+/* Muted channels & DMs when NOT viewing: suppress red unread & yellow ping colors */
+.visual-refresh [class*="wrapper_"][class*="modeMuted_"]:not([class*="modeSelected_"]) [class*="name_"],
+.visual-refresh [class*="wrapper_"][class*="modeMuted_"]:not([class*="modeSelected_"]) [class*="icon_"],
+.visual-refresh [class*="channel_"]:not(:has([class*="interactiveSelected_"])) a[aria-label$=", Muted"] [class*="name_"],
+.visual-refresh [class*="channel_"]:not(:has([class*="interactiveSelected_"])) a[aria-label$=", Muted"] [class*="subText_"] {
+    color: var(--text-5) !important;
+}
+
+/* Muted channels & DMs when ACTIVELY VIEWING: darker, desaturated sage green */
+.visual-refresh [class*="wrapper_"][class*="modeMuted_"][class*="modeSelected_"] [class*="name_"],
+.visual-refresh [class*="wrapper_"][class*="modeMuted_"][class*="modeSelected_"] [class*="icon_"],
+.visual-refresh [class*="channel_"]:has([class*="interactiveSelected_"]) a[aria-label$=", Muted"] [class*="name_"],
+.visual-refresh [class*="channel_"]:has([class*="interactiveSelected_"]) a[aria-label$=", Muted"] [class*="subText_"],
+.visual-refresh [class*="channel_"]:has([class*="interactiveSelected_"]) a[aria-label$=", Muted"] svg {
+    color: #567352 !important;
+}
+
+/* Muted channels & DMs when ACTIVELY VIEWING + has unread messages: darker rust-red */
+.visual-refresh [class*="wrapper_"][class*="modeMuted_"][class*="modeSelected_"][class*="modeUnreadImportant_"] [class*="name_"],
+.visual-refresh [class*="wrapper_"][class*="modeMuted_"][class*="modeSelected_"][class*="modeUnreadImportant_"] [class*="icon_"],
+.visual-refresh [class*="channel_"]:has([class*="interactiveSelected_"][class*="highlighted_"]) a[aria-label$=", Muted"] [class*="name_"] {
+    color: #8f4736 !important;
+}
+
+/* Muted channels & DMs when ACTIVELY VIEWING + has direct ping/mention: darker muted gold */
+.visual-refresh [class*="wrapper_"][class*="modeMuted_"][class*="modeSelected_"]:has([class*="numberBadge_"], [class*="mentionsBadge_"]) [class*="name_"],
+.visual-refresh [class*="wrapper_"][class*="modeMuted_"][class*="modeSelected_"]:has([class*="numberBadge_"], [class*="mentionsBadge_"]) [class*="icon_"],
+.visual-refresh [class*="channel_"]:has([class*="interactiveSelected_"]):has([class*="numberBadge_"], [class*="mentionsBadge_"]) a[aria-label$=", Muted"] [class*="name_"] {
+    color: #9e8442 !important;
+}
+
+/* =====================================================================
+   3. Brighter read/idle text in DM list (preserves active, unread & muted)
+   ===================================================================== */
+.visual-refresh [class*="channel_"]:not(:has([class*="interactiveSelected_"], [class*="highlighted_"])) a:not([aria-label$=", Muted"]) [class*="name_"] {
+    color: hsl(220, 25%, 78%) !important;
+    transition: color 0.15s ease;
+}
+
+.visual-refresh [class*="channel_"]:not(:has([class*="interactiveSelected_"], [class*="highlighted_"])) a:not([aria-label$=", Muted"]) [class*="subText_"] {
+    color: hsl(220, 20%, 62%) !important;
+}
+
+/* =====================================================================
+   1. Server channel category headings (brighter & slightly larger)
+   ===================================================================== */
+.visual-refresh [class*="containerDefault_"] [class*="mainContent_"] [class*="name_"] {
+    color: hsl(220, 30%, 82%) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.03em !important;
+    transition: color 0.15s ease;
+}
+
+.visual-refresh [class*="containerDefault_"] [class*="mainContent_"] [class*="icon_"] {
+    color: hsl(220, 30%, 82%) !important;
+    width: 14px !important;
+    height: 14px !important;
+    transition: color 0.15s ease;
+}
+
+.visual-refresh [class*="containerDefault_"] [class*="mainContent_"]:hover [class*="name_"],
+.visual-refresh [class*="containerDefault_"] [class*="mainContent_"]:hover [class*="icon_"] {
+    color: #ffffff !important;
+}
+
+/* =====================================================================
+   Subtle date divider line & solid dark pill badge
+   ===================================================================== */
+.visual-refresh [class*="divider_"]:not([class*="isUnread_"]) {
+    border-color: rgba(0, 210, 255, 0.18) !important;
+    background-color: rgba(0, 210, 255, 0.18) !important;
+    height: 1px !important;
+}
+
+.visual-refresh [class*="divider_"]:not([class*="isUnread_"]) [class*="content_"] {
+    position: relative !important;
+    z-index: 1 !important;
+    background-color: #0b0d12 !important;
+    color: hsl(220, 25%, 76%) !important;
+    border: 1px solid rgba(0, 210, 255, 0.22) !important;
+    border-radius: 99px !important;
+    padding: 2px 10px !important;
+}
+
+/* Crisp cyan border highlight when typing in the message box */
+.visual-refresh [class*="channelTextArea_"]:focus-within {
+    border-color: rgba(0, 210, 255, 0.55) !important;
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.15) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* =====================================================================
+   FIX: DM Active, Pinged, & Pin Icon Color Synchronization
+   ===================================================================== */
+
+/* 3. ACTIVE / CURRENTLY VIEWING DM -> Always Green (overrides unread red & ping yellow) */
+.visual-refresh [class*="privateChannels_"] [class*="channel_"]:has([class*="interactiveSelected_"]) [class*="name_"],
+.visual-refresh [class*="privateChannels_"] [class*="channel_"]:has([class*="interactiveSelected_"]) [class*="subText_"],
+.visual-refresh [class*="privateChannels_"] [class*="channel_"]:has([class*="interactiveSelected_"]) [class*="highlighted_"],
+.visual-refresh [class*="privateChannels_"] [class*="channel_"]:has([class*="interactiveSelected_"]) svg[class*="pin"] {
+    color: #89b482 !important;
+}
+
+/* 4. READ / IDLE DM (Not viewing, no unreads) -> Sync Pin Icon to Read Text Color */
+.visual-refresh [class*="privateChannels_"] [class*="channel_"]:not(:has([class*="interactiveSelected_"], [class*="highlighted_"], [class*="numberBadge_"])) a:not([aria-label$=", Muted"]) svg[class*="pin"] {
+    color: hsl(220, 25%, 78%) !important;
+}
+
+/* 5. MUTED DM OVERRIDE (Keeps your existing muted rules intact) */
+.visual-refresh [class*="privateChannels_"] [class*="channel_"]:not(:has([class*="interactiveSelected_"])) a[aria-label$=", Muted"] svg[class*="pin"] {
+    color: var(--text-5) !important;
+}
+.visual-refresh [class*="privateChannels_"] [class*="channel_"]:has([class*="interactiveSelected_"]) a[aria-label$=", Muted"] svg[class*="pin"] {
+    color: #567352 !important;
+}
+
+/* Make both standard and unread ("NEW") date divider pills 100% opaque */
+html.visual-refresh #app-mount [class*="divider_"] [class*="content_"],
+html.visual-refresh #app-mount [class*="divider_"][class*="isUnread_"] [class*="content_"] {
+    background: #0d0e11 !important;
+    background-color: #0d0e11 !important;
+    backdrop-filter: none !important;
+    opacity: 1 !important;
+}

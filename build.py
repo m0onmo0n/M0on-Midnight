@@ -8,12 +8,13 @@ Overlays:         overlays/zelk.css               (Zelk colors only)
                   overlays/zelk-look.css          (Zelk gaps, extras, selected pill)
                   overlays/cards.css              (message cards, gradient, plum panels, BetterFolders fix)
 
-Variants (2 layouts x 4 flavors = 8 files):
+Variants (2 layouts x 4 flavors = 8 files, plus the vertical-only sky flavor):
     layout:  vertical server list (default) | horizontal server list (-hsl)
     flavor:  midnight (original palette)    -> midnight[-hsl].theme.css
              zelk-colors (Zelk palette)     -> midnight-zelk-colors[-hsl].theme.css
              zelk (Zelk palette + look)     -> midnight-zelk[-hsl].theme.css
              cards (cards look + plum)      -> midnight-cards[-hsl].theme.css
+             sky (cards + Sky's colours)    -> midnight-sky.theme.css (vertical only)
 """
 import re
 from pathlib import Path
@@ -36,7 +37,14 @@ FLAVORS = {
     'zelk-colors': ('-zelk-colors', 'Zelk colors'),
     'zelk':        ('-zelk', 'Zelk'),
     'cards':       ('-cards', 'Cards'),
+    'sky':         ('-sky', 'Sky'),
 }
+
+# flavors that only exist with the vertical server list
+VERTICAL_ONLY = {'sky'}
+
+# header @author, if it is not just m0onmo0n
+AUTHORS = {'sky': 'm0onmo0n, Sky Guy 1'}
 
 # Theme header (name, description) for every (flavor, horizontal) variant. Everything else in the
 # header is shared, see HEADER below.
@@ -49,11 +57,12 @@ HEADERS = {
     ('zelk',        True):  ('M0on Zelk Midnight HSL',         'Custom Midnight theme with Zelk theme features + HSL'),
     ('cards',       False): ('M0on Midnight Cards',            'Discord+ inspired cards with M0on midnight theme features'),
     ('cards',       True):  ('M0on Midnight Cards HSL',        'Discord+ inspired cards with M0on midnight theme features and HSL'),
+    ('sky',         False): ("Sky and M0on's Midnight Cards",  "Cards theme with Sky Guy 1's colours and extras"),
 }
 HEADER = """/**
  * @name {name}
  * @description {description}
- * @author m0onmo0n
+ * @author {author}
  * @version 1
  * @website https://github.com/m0onmo0n/M0on-Midnight
 */"""
@@ -64,6 +73,7 @@ OVERLAYS = {
     'zelk-colors': ['overlays/zelk.css'],
     'zelk':        ['overlays/zelk.css', 'overlays/zelk-look.css'],
     'cards':       ['overlays/cards.css'],
+    'sky':         ['overlays/cards.css', 'overlays/sky.css'],
 }
 
 # extra overlay files appended only to the horizontal-server-list builds
@@ -92,7 +102,7 @@ def build(flavor, hsl):
 
     file_suffix, _ = FLAVORS[flavor]
     name, description = HEADERS[(flavor, hsl)]
-    header = HEADER.format(name=name, description=description)
+    header = HEADER.format(name=name, description=description, author=AUTHORS.get(flavor, 'm0onmo0n'))
     src = header + src[src.index('*/') + 2:]  # swap the source's leading header comment
 
     out = src.rstrip() + '\n'
@@ -107,5 +117,5 @@ def build(flavor, hsl):
 
 if __name__ == '__main__':
     for flavor in FLAVORS:
-        for hsl in (False, True):
+        for hsl in (False,) if flavor in VERTICAL_ONLY else (False, True):
             print('wrote dist/' + build(flavor, hsl))
