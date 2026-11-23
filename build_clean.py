@@ -13,7 +13,7 @@ Writes into clean/:
   zelk-hsl-additions.theme.css        ONLY our additions (load it after upstream midnight)
 
 addons/m0on.css is the one file that holds everything we add on top of upstream: settings, the Zelk palette, snippets.
-What was tried and thrown out on purpose is in CLEAN-REVIEW.md (the code is in git history); addons/_old/ is the previous split of the same files.
+What was tried and thrown out on purpose is in CLEAN-REVIEW.md (the code is in git history).
 After a Discord update run   python tools/audit.py addons/m0on.css upstream/*.css
 to see which rules stopped matching anything (needs tools/hashes.json from tools/extract-hashes.js).
 """
