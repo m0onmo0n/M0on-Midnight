@@ -49,7 +49,7 @@ catches up. They cost nothing. `python tools/audit.py addons/m0on.css upstream/*
 
 ## Why our additions use no `:has()` (found 2026-11-23)
 
-Hovering a server pill and switching servers felt slow. Test files with parts removed (see `hashed/feel.py`) showed it was our three `:has()` rules
+Hovering a server pill and switching servers felt slow. Test files with parts removed (see `tools/feel.py`) showed it was our three `:has()` rules
 (selected-server pill, yellow channel pings, yellow DM pings). A `:has()` rule is re-checked whenever something inside its element changes, and
 that cost stays even when the rule sits in a closed `@container`, so `--fancy-unread-pills: off` did not help. The rules now read plain attributes
 (`data-server-unread`, `data-channel-ping`, `data-dm-ping`) that the ServerPillColorizer plugin stamps, and the selected pill uses its own `selected_`
