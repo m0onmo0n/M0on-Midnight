@@ -1,0 +1,234 @@
+/**
+ * @name M0on additions on top of midnight (Zelk palette + HSL)
+ * @description Everything our Zelk HSL theme adds to refact0r's midnight theme, as one file. Load it AFTER midnight.
+ * @author m0onmo0n
+ * @version 2
+ * @website https://github.com/m0onmo0n/M0on-Midnight
+*/
+
+/* Enable the upstream midnight theme, then this file after it (or paste the body into Quick CSS, which always loads
+   last). It relies on midnight's own variables and its `container-name: body`, so it does nothing on its own. */
+
+/* ===== 0. Imports: horizontal server list (Gibbu), fonts ===== */
+@import url('https://discordstyles.github.io/HorizontalServerList/HorizontalServerList.css');
+
+:root {
+    --HSL-server-direction: column; /* column, column-reverse */
+    --HSL-server-alignment: flex-start; /* flex-start, center, flex-end */
+}
+
+body {
+    --gap: 6px; /* spacing between panels (upstream default is 12px) */
+    --top-bar-height: 36px; /* upstream: var(--gap), which collapses the top bar */
+    --top-bar-button-position: off; /* upstream: titlebar, which hides the back/forward arrows and the title */
+    --dms-icon-svg-url: url("https://raw.githubusercontent.com/squidfunk/mkdocs-material/refs/heads/master/material/templates/.icons/material/shield-moon.svg"); /* home button icon */
+}
+
+/* scrollbars: the thumb uses the dark spacing colour (--bg-3) like the old file, so it is nearly invisible.
+   Upstream now uses --bg-1, which shows. For no scrollbar at all, see the commented rule below. */
+body,
+.theme-dark:not(.custom-user-profile-theme),
+.theme-light:not(.custom-user-profile-theme) {
+    --scrollbar-auto-thumb: var(--bg-3);
+    --scrollbar-thin-thumb: var(--bg-3);
+}
+/* * { scrollbar-width: none !important; } *::-webkit-scrollbar { display: none; } */
+:root {
+    --status-speaking: var(--accent-2); /* speaking ring follows the theme accent */
+}
+/* ===== 2. Zelk palette (replaces midnight text, background and accent colours) ===== */
+/* ZELK palette only (colors, nothing else) */
+:root {
+    /* text */
+    --text-0: white;                 /* text on colored elements */
+    --text-1: var(--text-2);
+    --text-2: #edf8fe;               /* headings, important text */
+    --text-3: #c6ecff;               /* normal text */
+    --text-4: #8eacbc;               /* icon buttons and channels */
+    --text-5: #6d8692;               /* muted */
+
+    /* backgrounds: Zelk hue (197) but with midnight's darker lightness steps */
+    --bg-1: hsl(197, 14%, 19%);      /* buttons when clicked */
+    --bg-2: hsl(197, 14%, 15%);      /* buttons */
+    --bg-3: hsl(197, 18%, 7%);       /* spacing, secondary elements (darker than panels, like midnight) */
+    --bg-4: hsl(197, 16%, 10%);      /* main panels */
+    --hover: hsla(197, 20%, 40%, 0.1);
+    --active: hsla(197, 20%, 40%, 0.2);
+    --active-2: hsla(197, 19%, 40%, 0.3);
+    --message-hover: hsla(220, 0%, 0%, 0.1);
+
+    /* accent (Zelk light blue) */
+    --accent-1: hsl(199, 100%, 80%); /* links, selected channel, accent text */
+    --accent-2: hsl(199, 90%, 72%);
+    --accent-3: hsl(199, 60%, 40%);  /* accent buttons */
+    --accent-4: hsl(199, 60%, 34%);
+    --accent-5: hsl(199, 60%, 28%);
+    --accent-new: var(--accent-2);
+    --mention: hsl(var(--yellow-300-hsl)/0.08);
+    --mention-hover: #bde6fb15;
+
+    --border-light: var(--hover);
+    --border: var(--active);
+}
+/* === Revert App-Tags to BOT (by hanyuko + tweak) === */
+span[class*="botTag"]:not([class*="botTagAi"], [class*="botTagCozy"], [class*="botTagRemix"], [class*="botTagOP"]) span[class*="botText"] {
+  visibility: hidden;
+  position: relative;
+}
+span[class*="botTag"]:not([class*="botTagAi"], [class*="botTagCozy"], [class*="botTagRemix"], [class*="botTagOP"]) span[class*="botText"]::after {
+  content: "BOT";
+  visibility: visible;
+  position: absolute;
+  left: 0;
+  font-size: 0.625rem;
+}
+
+/* === Fullscreen emoji/sticker/gif modal === */
+[class*="layerContainer_"] [class*="positionLayer_"] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+[class*="positionLayer_"] [class*="drawerSizingWrapper_"] {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  width: 90vw !important;
+  height: 90vh;
+}
+
+/* compact timestamps only on hover */
+[class*="timestamp"][class*="CompactTimeStamp"] {
+  opacity: 0;
+}
+[class*="messageListItem"] > [class*="message"]:hover [class*="timestamp"][class*="CompactTimeStamp"] {
+  opacity: 1;
+}
+/* left side arrows */
+[class*="containerDefault_"] > [class*="wrapperCommon_"] > [class*="mainContent_"] {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 4px;
+}
+/* spin-on-hover buttons */
+[class*="panels_"] button:last-child [class*="contents_"] { transition: transform 1s ease; }
+[class*="panels_"] button:last-child:hover [class*="contents_"] { transform: rotate(360deg); }
+/* === GIF Favorites Cleanup (by MadelineMaid) === */
+[class*="gifFavoriteButton_"] {
+  background-color: transparent;
+}
+[class*="result_"] [class*="favButton"] {
+  right: unset;
+}
+
+/* ===== 6. Unread / ping / selected colours and server pills (pills and DM pings need the ServerPillColorizer plugin) ===== */
+/**
+ * @name Unread msg and selected channel snippet
+ * @author Amnissya
+ * @description Random snippet on gibbu's support server that transforms the unread channel behaviour and current channel behaviour
+ */
+
+/*=============================================*/
+                /*unread msg*/      
+/*server*/
+:where(.visual-refresh) [class*="modeUnreadImportant_"] .icon_TNyK-N, :where(.visual-refresh) [class*="modeUnreadImportant_"]:hover .icon_TNyK-N {
+    color: #cd664c!important;
+}
+
+[class*="modeUnreadImportant_"] .name_TNyK-N {
+    color:  #cd664c!important;
+} 
+[class*="unread_"][class*="unreadImportant_"] /* white unread dot left of channel names (hash-free) */ {
+    display: none !important;
+}
+/*dms*/
+:where(.visual-refresh) [class*="highlighted_"] {
+    color:  #cd664c;
+}
+[class*="unreadPill_"] {
+        display: none;
+}
+/*=============================================*/
+                /*server select read*/               
+
+/*server*/
+.container_H5ozaj .wrapper_TNyK-N[class*="modeSelected_"] .name_TNyK-N, .container_H5ozaj .wrapper_TNyK-N[class*="modeConnected_"] .name_TNyK-N {
+    color: #89b482!important;
+}
+[class*="modeSelected_"] [class*="link_"], [class*="modeSelected_"]:hover [class*="link_"] {
+    background:none;
+}
+.container_H5ozaj .wrapper_TNyK-N[class*="modeSelected_"] .icon_TNyK-N, .container_H5ozaj .wrapper_TNyK-N[class*="modeConnected_"] .icon_TNyK-N {
+    color: #89b482!important;
+}
+/*dms*/
+:where(.visual-refresh) [class*="interactive_"]:active, :where(.visual-refresh) [class*="interactiveSelected_"] {
+    color: #89b482!important;
+    background: none;
+
+}
+
+/*=============================================*/
+        /* ping colour: server channels where you were mentioned (unread stays red, open stays green) */
+/* Adapted from Sky Guy 1's variant. Server channels use Discord's own mention badge, no plugin needed. */
+:root {
+    --ping-colour: var(--yellow-2);
+}
+/* ===== FANCY UNREAD PILLS =====
+   on:  channels and DMs with a ping turn yellow, server and folder pills are coloured (red unread, yellow ping, green selected)
+   off: the old behaviour: no ping colour, Discord's own white server pills. The ServerPillColorizer plugin also stops working
+        when this is off (it checks the variable), so the lag it can cause goes away too. */
+@property --fancy-unread-pills {
+    syntax: 'on | off';
+    inherits: false;
+    initial-value: on;
+}
+body {
+    --fancy-unread-pills: on;
+}
+
+:root {
+    --server-pill-unread: #cd664c;
+    --server-pill-ping: #e0b64f;
+    --server-pill-selected: #89b482;
+}
+
+@container body style(--fancy-unread-pills: on) {
+    /* server channels where you were mentioned (Discord's own mention badge, no plugin needed) */
+    [class*="containerDefault_"] [class*="wrapper_"]:not([class*="modeSelected_"]):has([class*="numberBadge_"]) [class*="name_"],
+    [class*="containerDefault_"] [class*="wrapper_"]:not([class*="modeSelected_"]):has([class*="numberBadge_"]) [class*="icon_"] {
+        color: var(--ping-colour) !important;
+    }
+    /* DMs with a real mention or reply turn yellow (needs the plugin, which sets data-dm-ping); an ordinary unread DM stays red */
+    [class*="privateChannels_"] [class*="channel_"][data-dm-ping="true"]:not(:has([class*="interactiveSelected_"])) :is([class*="name_"], [class*="innerContainer_"], [class*="subText_"], svg[class*="pin"]) {
+        color: var(--ping-colour) !important;
+    }
+    /* server pills (the plugin stamps data-server-unread="unread|ping" on server and folder items) */
+    /* selected server = green; unread and ping below still win via specificity */
+    :where([class*="listItem_"]:has([aria-selected="true"])) > [aria-hidden="true"] > [class*="item_"] {
+        background: var(--server-pill-selected) !important;
+    }
+    [data-server-unread="unread"] > [aria-hidden="true"] > [class*="item_"] {
+        background: var(--server-pill-unread) !important;
+    }
+    [data-server-unread="ping"] > [aria-hidden="true"] > [class*="item_"] {
+        background: var(--server-pill-ping) !important;
+    }
+}
+/* === Unclamp User Bios (by myself) === */
+[class*="descriptionClamp_"]:not(.headerText_SOY5H6 [class*="descriptionClamp_"]) {
+-webkit-line-clamp: unset;
+  max-height: 400px;
+}
+[class*="viewFullBio_"] {
+  display: none;
+}

@@ -1,0 +1,35 @@
+/* small-avatars.css: smaller avatars in "Default" message display (the old Cozy step).
+   Needs Discord Settings > Appearance > Message Display = Default (not Compact). */
+@property --small-avatars {
+    syntax: 'on | off';
+    inherits: false;
+    initial-value: on;
+}
+
+body {
+    --avatar-small: 28px; /* chat avatar size (Discord's default is 40px) */
+    --avatar-small-left: 10px; /* space left of the avatar */
+}
+
+@container body style(--small-avatars: on) {
+    .visual-refresh {
+        /* text column starts after the smaller avatar */
+        [class*="messageListItem_"] [class*="cozy_"][class*="wrapper_"] {
+            padding-left: calc(var(--avatar-small) + var(--avatar-small-left) + 12px);
+        }
+        /* the avatar itself */
+        [class*="messageListItem_"] [class*="cozy_"] [class*="avatar_"]:not([class*="compact_"]) {
+            width: var(--avatar-small) !important;
+            height: var(--avatar-small) !important;
+            left: var(--avatar-small-left) !important;
+            margin-top: 0;
+            top: 2px;
+        }
+        /* avatar decorations scale with it */
+        [class*="messageListItem_"] [class*="cozy_"] [class*="avatarDecoration_"] {
+            width: calc(var(--avatar-small) * 1.2);
+            height: calc(var(--avatar-small) * 1.2);
+            left: calc(var(--avatar-small-left) - var(--avatar-small) * 0.1);
+        }
+    }
+}

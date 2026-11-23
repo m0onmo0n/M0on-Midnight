@@ -1,0 +1,30 @@
+/* dropped on purpose: hide profile reactions, hide chatbox icons */
+
+/* === Remove Profile Reactions (by LuSaffi) === */
+[class*="avatarPopover_"],
+[class*="statusPopover_"],
+[class*="activityPopover_"] {
+  display: none;
+}
+
+
+/* === Remove Chatbox Icons (by Sessh) === */
+/* to change, select one of the "button[aria-label="Select emoji"]" areas and change the text that's inside those " " */
+/*
+Add Emoji             - Emoji icon (was "Select emoji" before Discord renamed it)
+Open sticker picker   - Sticker icon
+Open GIF picker       - GIF icon
+Send a gift           - Gift icon
+Apps                  - Controller icon
+*/
+[class*="channelTextArea_"] [aria-label="Add Emoji"],
+[class*="channelTextArea_"] [aria-label="Open GIF picker"],
+[class*="channelTextArea_"] [aria-label="Send a gift"],
+[class*="channelTextArea_"] [aria-label="Apps"] {
+  display: none;
+}
+.visual-refresh [class*="buttons_"] {
+  align-items: center;
+  gap: 0.1px;
+}
+

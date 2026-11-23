@@ -1,0 +1,90 @@
+@property --panel-blur {
+    syntax: 'off | on';
+    inherits: false;
+    initial-value: off;
+}
+
+@container body style(--panel-blur: on) {
+    #app-mount {
+        --panel-backdrop-filter: blur(var(--blur-amount));
+    }
+
+    .popover_DpHsW6.popover_DpHsW6 /* message hover quick action bar */,
+    .tooltip_3_v8qp /* tooltip class 1 */,
+    .contentWrapper_58b0l2 /* emoji/gif panel */,
+    .root__KoJTP /* modals like invite */,
+    .outer_P1YEjQ.user-profile-popout:not(.custom-theme-background) /* small profile popup */,
+    .autocomplete_rg6La1 /* autocomplete */,
+    .container_cbVzxY /* search suggestions */,
+    .messagesPopoutWrap_6bgemo /* inbox */,
+    .popout_j5xNzb /* channel hover popout */,
+    .bar_t1P8Sn /* channel list new unreads bar */,
+    .orbWalletContainer_hSuDqh /* orb wallet container */ {
+        background: var(--bg-floating);
+        backdrop-filter: var(--panel-backdrop-filter);
+    }
+
+    /* Tooltip class 2 */
+    .tooltipLayer_ZDdyhE > div {
+        border-radius: var(--radius-sm);
+        backdrop-filter: var(--panel-backdrop-filter);
+
+        .tooltip_ZDdyhE {
+            background: var(--bg-floating);
+        }
+    }
+
+    /* Context menus */
+    .menu_M3qk4j {
+        background: var(--bg-floating);
+
+        /* Fix menu positioning by applying pseudo element */
+        &::before {
+            --size: calc(100% - 1px);
+            
+            content: '';
+            position: absolute;
+            width: var(--size);
+            height: var(--size);
+            border-radius: inherit;
+            backdrop-filter: var(--panel-backdrop-filter);
+            z-index: -1;
+        }
+    }
+    .submenuPaddingContainer_M3qk4j > .menu_M3qk4j::before {
+        width: calc(var(--size) - 16px);
+    }
+    .submenuPaddingContainer_nitlyF > .menu_M3qk4j::before {
+        width: calc(var(--size) - 24px);
+    }
+}
+
+@property --transparency-tweaks {
+    syntax: 'off | on';
+    inherits: false;
+    initial-value: off;
+}
+
+@container body style(--transparency-tweaks: on) {
+    .children_ybUK7Z:after {
+        display: none;
+    }
+    .chatGradient_8AE1Qq {
+        display: none;
+    }
+    .form_z_gUBg {
+        margin-top: 0;
+    }
+}
+
+@property --remove-bg-layer {
+    syntax: 'off | on';
+    inherits: false;
+    initial-value: off;
+}
+
+@container body style(--remove-bg-layer: on) {
+    .bg_Fd0FEH {
+        background: transparent !important;
+    }
+}

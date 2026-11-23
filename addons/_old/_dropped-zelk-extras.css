@@ -1,0 +1,63 @@
+/* zelk-extras.css: features ported from the old Zelk theme. All off by default. */
+@property --zelk-toolbar {
+    syntax: 'on | off';
+    inherits: false;
+    initial-value: off;
+}
+@property --hide-scrollbars {
+    syntax: 'on | off';
+    inherits: false;
+    initial-value: off;
+}
+@property --hide-profile-notes {
+    syntax: 'on | off';
+    inherits: false;
+    initial-value: off;
+}
+@property --hide-profile-message-box {
+    syntax: 'on | off';
+    inherits: false;
+    initial-value: off;
+}
+
+/* toolbar icons as rounded squares (top-right of the chat header) */
+@container body style(--zelk-toolbar: on) {
+    .visual-refresh [class*="toolbar_"] > [role="button"],
+    .visual-refresh [class*="toolbar_"] > [class*="iconWrapper_"],
+    .visual-refresh [class*="toolbar_"] > [class*="clickable_"] {
+        background: var(--bg-3);
+        border-radius: 8px;
+        padding: 4px;
+        margin: 0 2px;
+        transition: background-color 0.15s ease;
+    }
+    .visual-refresh [class*="toolbar_"] > [role="button"]:hover,
+    .visual-refresh [class*="toolbar_"] > [class*="iconWrapper_"]:hover,
+    .visual-refresh [class*="toolbar_"] > [class*="clickable_"]:hover {
+        background: var(--hover);
+    }
+}
+
+/* hide scrollbars everywhere (scrolling still works) */
+@container body style(--hide-scrollbars: on) {
+    * {
+        scrollbar-width: none !important;
+    }
+    *::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* hide the "Note" field in user profiles */
+@container body style(--hide-profile-notes: on) {
+    .inner_P1YEjQ .container_VhFsFg {
+        display: none;
+    }
+}
+
+/* hide the "Message @user" box at the bottom of profile popouts */
+@container body style(--hide-profile-message-box: on) {
+    .inner_P1YEjQ > [class*="footer_"] {
+        display: none;
+    }
+}

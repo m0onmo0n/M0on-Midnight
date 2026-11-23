@@ -1,0 +1,85 @@
+/**
+ * @name Unread msg and selected channel snippet
+ * @author Amnissya
+ * @description Random snippet on gibbu's support server that transforms the unread channel behaviour and current channel behaviour
+ */
+
+/*=============================================*/
+                /*unread msg*/               
+
+
+/*server*/
+:where(.visual-refresh) [class*="modeUnreadImportant_"] .icon_TNyK-N, :where(.visual-refresh) [class*="modeUnreadImportant_"]:hover .icon_TNyK-N {
+    color: #cd664c!important;
+}
+
+[class*="modeUnreadImportant_"] .name_TNyK-N {
+    color:  #cd664c!important;
+} 
+[class*="unread_"][class*="unreadImportant_"] /* white unread dot left of channel names (hash-free) */ {
+    display: none !important;
+}
+/*dms*/
+:where(.visual-refresh) [class*="highlighted_"] {
+    color:  #cd664c;
+}
+[class*="unreadPill_"] {
+        display: none;
+}
+/*=============================================*/
+                /*server select read*/               
+
+/*server*/
+.container_H5ozaj .wrapper_TNyK-N[class*="modeSelected_"] .name_TNyK-N, .container_H5ozaj .wrapper_TNyK-N[class*="modeConnected_"] .name_TNyK-N {
+    color: #89b482!important;
+}
+[class*="modeSelected_"] [class*="link_"], [class*="modeSelected_"]:hover [class*="link_"] {
+    background:none;
+}
+.container_H5ozaj .wrapper_TNyK-N[class*="modeSelected_"] .icon_TNyK-N, .container_H5ozaj .wrapper_TNyK-N[class*="modeConnected_"] .icon_TNyK-N {
+    color: #89b482!important;
+}
+/*dms*/
+:where(.visual-refresh) [class*="interactive_"]:active, :where(.visual-refresh) [class*="interactiveSelected_"] {
+    color: #89b482!important;
+    background: none;
+
+}
+
+/*=============================================*/
+        /* ping colour: server channels where you were mentioned (unread stays red, open stays green) */
+/* Adapted from Sky Guy 1's variant. Server channels use Discord's own mention badge, no plugin needed. */
+:root {
+    --ping-colour: var(--yellow-2);
+}
+/* server channels */
+[class*="containerDefault_"] [class*="wrapper_"]:not([class*="modeSelected_"]):has([class*="numberBadge_"]) [class*="name_"],
+[class*="containerDefault_"] [class*="wrapper_"]:not([class*="modeSelected_"]):has([class*="numberBadge_"]) [class*="icon_"] {
+    color: var(--ping-colour) !important;
+}
+/* DMs with a real mention or reply turn yellow (needs the ServerPillColorizer plugin, which sets data-dm-ping).
+   An ordinary unread DM stays red. */
+[class*="privateChannels_"] [class*="channel_"][data-dm-ping="true"]:not(:has([class*="interactiveSelected_"])) :is([class*="name_"], [class*="innerContainer_"], [class*="subText_"], svg[class*="pin"]) {
+    color: var(--ping-colour) !important;
+}
+
+/*=============================================*/
+        /* server pill colours (needs the ServerPillColorizer plugin) */
+/* The plugin stamps data-server-unread="unread|ping" on server/folder list items.
+   Without the plugin these rules match nothing. Same palette as the channel list above:
+   red = unread, yellow = ping (ping wins). */
+:root {
+    --server-pill-unread: #cd664c;
+    --server-pill-ping: #e0b64f;
+    --server-pill-selected: #89b482;
+}
+/* selected server = green (same as the selected channel); unread/ping below still win via specificity */
+:where([class*="listItem_"]:has([aria-selected="true"])) > [aria-hidden="true"] > [class*="item_"] {
+    background: var(--server-pill-selected) !important;
+}
+[data-server-unread="unread"] > [aria-hidden="true"] > [class*="item_"] {
+    background: var(--server-pill-unread) !important;
+}
+[data-server-unread="ping"] > [aria-hidden="true"] > [class*="item_"] {
+    background: var(--server-pill-ping) !important;
+}
