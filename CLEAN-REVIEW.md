@@ -46,3 +46,12 @@ dashless channel names, the hide-upper-badges rule, and the five other spin-on-h
 Eleven upstream rules point at classes that no longer exist in the client (`.shop_Mqg79R`, `.footerButton_YBm90d`,
 `.contentHeader_3Rvb29` and others). Upstream's daily class updater uses an outdated class list, so these stay dead until it
 catches up. They cost nothing. `python tools/audit.py addons/m0on.css upstream/*.css` lists them.
+
+## Why our additions use no `:has()` (found 2026-11-23)
+
+Hovering a server pill and switching servers felt slow. Test files with parts removed (see `hashed/feel.py`) showed it was our three `:has()` rules
+(selected-server pill, yellow channel pings, yellow DM pings). A `:has()` rule is re-checked whenever something inside its element changes, and
+that cost stays even when the rule sits in a closed `@container`, so `--fancy-unread-pills: off` did not help. The rules now read plain attributes
+(`data-server-unread`, `data-channel-ping`, `data-dm-ping`) that the ServerPillColorizer plugin stamps, and the selected pill uses its own `selected_`
+class. `python tools/audit.py addons/m0on.css` reports how many `:has(` are left; keep it at 0.
+The restyle benchmarks (BENCH, BENCH2) did not predict this; hover latency and server switching were the real test.

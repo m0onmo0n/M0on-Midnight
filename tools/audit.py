@@ -103,6 +103,10 @@ def main():
         for line, prelude, reason in found:
             print(f'  line {line:>4}  [{reason}]  {prelude}')
     print(f'\n{total} fully dead rule(s)')
+    # :has() cost: every :has() rule is re-checked whenever something inside its element changes, even inside a closed
+    # @container. Hovering a server and switching servers felt slow because of three of them (Nov 2026). Keep our files at zero.
+    has = sum(Path(f).read_text(encoding='utf8').count(':has(') for f in sys.argv[1:])
+    print(f':has( used {has} time(s) in these files' + ('  <-- each costs on every DOM change; prefer a plugin-stamped attribute' if has else ''))
 
 
 if __name__ == '__main__':
