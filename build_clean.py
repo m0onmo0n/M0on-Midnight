@@ -4,13 +4,9 @@
     python build_clean.py
 
 Writes into clean/:
-  m0on-midnight-hsl.theme.css         THE THEME FILE (horizontal server list): upstream's variable file with our values,
-  m0on-midnight.theme.css             our additions, and an @import of upstream's hosted build for everything else
-  midnight-zelk-colors-hsl.theme.css  the same thing inlined: upstream's whole source plus our additions in one big file
-  midnight-zelk-colors.theme.css      (vertical)
-  m0on-midnight-single-hsl.theme.css  ONE FILE: upstream source + the horizontal server list inlined + our additions (no @import of either, no small user panel)
+  m0on-midnight-single-hsl.theme.css  ONE FILE: upstream source + the horizontal server list inlined + our additions
+                                      (no @import of either, no small user panel)
   m0on-midnight-variables.theme.css   just the settings + an @import of the one-file theme above (this is the file to enable)
-  zelk-hsl-additions.theme.css        ONLY our additions (load it after upstream midnight)
 
 addons/m0on.css is the one file that holds everything we add on top of upstream: settings, the Zelk palette, snippets.
 What was tried and thrown out on purpose is in CLEAN-REVIEW.md (the code is in git history).
@@ -71,28 +67,7 @@ def additions(hsl):
     return css
 
 
-# ---------- the inlined single-file build ----------
-
-def build_inlined(hsl):
-    imports, body = [], [upstream_variables()]
-    for m in UPSTREAM_MODULES:
-        got, rest = take_imports(read(f'upstream/{m}.css'))
-        imports += got
-        body.append(rest.strip())
-    got, rest = take_imports(additions(hsl))
-    imports += got
-    body.append(rest.strip())
-
-    name = 'M0on Midnight Zelk palette, inlined' + (' HSL' if hsl else '')
-    description = 'Upstream midnight (whole source) with the Zelk palette and a few additions, in one file'
-    out = HEADER.format(name=name, description=description) + '\n\n' + '\n'.join(unique(imports)) + '\n\n' + '\n\n'.join(body) + '\n'
-    dest = ROOT / 'clean' / f"midnight-zelk-colors{'-hsl' if hsl else ''}.theme.css"
-    dest.parent.mkdir(exist_ok=True)
-    dest.write_text(out, encoding='utf8')
-    return dest
-
-
-# ---------- the theme file: variables + additions, upstream's build imported ----------
+# ---------- reading and changing upstream's variable file ----------
 
 def top_level_rules(css):
     """Yield (start, brace, end, prelude) of each top-level {...} block in css; start is where its selector text begins."""
@@ -169,25 +144,6 @@ def apply_values(theme_css, overrides):
     return VAR_LINE.sub(repl, theme_css), changed
 
 
-def build_theme(hsl):
-    """The theme file: upstream's variable file with our values, our additions, and @imports for the rest."""
-    theme = upstream_variables()
-    overrides, rest = split_overrides(additions(hsl), theme_variable_names(theme))
-    theme, changed = apply_values(theme, overrides)
-    not_applied = sorted(set(overrides) - set(changed))  # same value as upstream's, or not found
-    got, rest = take_imports(rest)
-    imports = [UPSTREAM_IMPORT] + got
-    name = 'M0on Midnight Zelk palette' + (' HSL' if hsl else '')
-    out = (HEADER.format(name=name, description='Upstream midnight (imported) with our variable values and a few additions')
-           + '\n\n/* upstream midnight, loaded from its own site */\n' + '\n'.join(unique(imports))
-           + "\n\n/* ===== variables: upstream's file with our values (the old value is noted after each change) ===== */\n"
-           + theme + '\n\n/* ===== our additions ===== */\n' + rest.strip() + '\n')
-    dest = ROOT / 'clean' / f"m0on-midnight{'-hsl' if hsl else ''}.theme.css"
-    dest.parent.mkdir(exist_ok=True)
-    dest.write_text(out, encoding='utf8')
-    return dest, len(changed), not_applied
-
-
 # ---------- one big file: upstream midnight + the horizontal server list + our additions, no imports of either ----------
 
 SINGLE_VALUES = {'--small-user-panel': 'off'}  # values for this build only
@@ -250,39 +206,8 @@ def build_variables():
     return dest, len(changed)
 
 
-# ---------- additions only ----------
-
-ADDITIONS_HEADER = """/**
- * @name M0on additions on top of midnight (Zelk palette + HSL)
- * @description Everything our Zelk HSL theme adds to refact0r's midnight theme, as one file. Load it AFTER midnight.
- * @author m0onmo0n
- * @version 2
- * @website https://github.com/m0onmo0n/M0on-Midnight
-*/
-
-/* Enable the upstream midnight theme, then this file after it (or paste the body into Quick CSS, which always loads
-   last). It relies on midnight's own variables and its `container-name: body`, so it does nothing on its own. */
-"""
-
-
-def build_additions():
-    dest = ROOT / 'clean' / 'zelk-hsl-additions.theme.css'
-    dest.write_text(ADDITIONS_HEADER + '\n' + additions(True), encoding='utf8')
-    return dest
-
-
 if __name__ == '__main__':
-    for hsl in (True, False):
-        d, n, not_applied = build_theme(hsl)
-        print(f'wrote {d.relative_to(ROOT)} ({d.stat().st_size} bytes), {n} values changed')
-        if not_applied:
-            print(f'   left alone (same as upstream or not in its file): {", ".join(not_applied)}')
-    for hsl in (True, False):
-        d = build_inlined(hsl)
-        print(f'wrote {d.relative_to(ROOT)} ({d.stat().st_size} bytes)')
     d, n = build_variables()
     print(f'wrote {d.relative_to(ROOT)} ({d.stat().st_size} bytes), {n} values changed')
     d, changed = build_single()
     print(f'wrote {d.relative_to(ROOT)} ({d.stat().st_size} bytes), values changed here: {", ".join(changed)}')
-    d = build_additions()
-    print(f'wrote {d.relative_to(ROOT)} ({d.stat().st_size} bytes)')
