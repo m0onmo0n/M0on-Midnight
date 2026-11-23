@@ -3,7 +3,7 @@
 Upstream midnight (refact0r) is vendored in `upstream/` (see `upstream/VERSION.txt`). Everything we add lives in
 **one file, `addons/m0on.css`**. `python build_clean.py` builds it into `clean/`.
 
-What was tried and thrown out on purpose is in `addons/_dropped.css`. The earlier split of these files is in `addons/_old/`.
+What was tried and thrown out on purpose is listed below; the code is in git history (`git show 113ee72:addons/_dropped.css`). The earlier split of these files is in `addons/_old/`.
 
 ## What stays (addons/m0on.css)
 
@@ -28,7 +28,7 @@ What was tried and thrown out on purpose is in `addons/_dropped.css`. The earlie
 | server and folder pills: red unread, yellow ping, green selected | needs the ServerPillColorizer plugin |
 | unclamp user bios | |
 
-## What was dropped (addons/_dropped.css)
+## What was dropped (the code: `git show 113ee72:addons/_dropped.css`)
 
 Zelk extras (rounded toolbar squares, hide scrollbars, hide profile note, hide profile message box), small avatars, the old collapse-icon-left
 rule, hide profile reactions, bot forms, hide chatbox icons, the `pulse` animation (unused), cozy message padding, the message list
