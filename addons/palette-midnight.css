@@ -1,0 +1,54 @@
+/* ===== Original custom midnight palette (white text, cyan accent; upstream's blue accent and bright status colours replaced) ===== */
+:root {
+    /* text */
+    --text-0: white;
+    --text-1: var(--text-2);
+    --text-2: white;
+    --text-3: hsl(200, 100%, 89%);
+    --text-4: hsl(201, 26%, 65%);
+    --text-5: hsl(220, 15%, 42%);
+
+    /* backgrounds */
+    --bg-1: hsl(220, 15%, 20%);
+    --bg-2: hsl(220, 15%, 16%);
+    --bg-3: hsl(223, 17%, 8%);
+    --hover: hsla(230, 20%, 40%, 0.1);
+    --active: hsla(220, 20%, 40%, 0.2);
+
+    /* accent (cyan) */
+    --accent-1: hsl(190, 70%, 60%);
+    --accent-2: hsl(190, 70%, 48%);
+    --accent-3: hsl(190, 70%, 42%);
+    --accent-4: hsl(190, 70%, 36%);
+    --accent-5: hsl(190, 70%, 30%);
+    --mention: hsl(var(--yellow-300-hsl)/0.08);
+    --mention-hover: hsla(200, 89%, 86%, 0.08);
+
+    /* status */
+    --online: #23a55a;
+    --dnd: hsl(340, 60%, 60%);
+    --idle: hsl(50, 60%, 60%);
+    --streaming: hsl(260, 60%, 60%);
+
+    /* colour steps, a little darker than upstream's */
+    --red-1: oklch(76% 0.12 0);
+    --red-3: oklch(64% 0.12 0);
+    --red-4: oklch(58% 0.12 0);
+    --red-5: oklch(52% 0.12 0);
+    --green-1: oklch(76% 0.11 170);
+    --green-3: oklch(64% 0.11 170);
+    --green-4: oklch(58% 0.11 170);
+    --green-5: oklch(52% 0.11 160);
+    --blue-1: oklch(76% 0.1 215);
+    --blue-3: oklch(64% 0.1 215);
+    --blue-4: oklch(58% 0.1 215);
+    --blue-5: oklch(52% 0.1 215);
+    --yellow-2: oklch(74% 0.11 90);
+    --yellow-3: oklch(68% 0.11 90);
+    --yellow-4: oklch(62% 0.11 90);
+    --yellow-5: oklch(56% 0.11 90);
+    --purple-1: oklch(76% 0.11 310);
+    --purple-3: oklch(64% 0.11 310);
+    --purple-4: oklch(58% 0.11 310);
+    --purple-5: oklch(52% 0.11 310);
+}

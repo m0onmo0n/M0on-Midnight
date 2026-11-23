@@ -1,0 +1,34 @@
+/* ===== Zelk palette (replaces midnight text, background and accent colours) ===== */
+/* ZELK palette only (colors, nothing else) */
+:root {
+    /* text */
+    --text-0: white;                 /* text on colored elements */
+    --text-1: var(--text-2);
+    --text-2: #edf8fe;               /* headings, important text */
+    --text-3: #c6ecff;               /* normal text */
+    --text-4: #8eacbc;               /* icon buttons and channels */
+    --text-5: #6d8692;               /* muted */
+
+    /* backgrounds: Zelk hue (197) but with midnight's darker lightness steps */
+    --bg-1: hsl(197, 14%, 19%);      /* buttons when clicked */
+    --bg-2: hsl(197, 14%, 15%);      /* buttons */
+    --bg-3: hsl(197, 18%, 7%);       /* spacing, secondary elements (darker than panels, like midnight) */
+    --bg-4: hsl(197, 16%, 10%);      /* main panels */
+    --hover: hsla(197, 20%, 40%, 0.1);
+    --active: hsla(197, 20%, 40%, 0.2);
+    --active-2: hsla(197, 19%, 40%, 0.3);
+    --message-hover: hsla(220, 0%, 0%, 0.1);
+
+    /* accent (Zelk light blue) */
+    --accent-1: hsl(199, 100%, 80%); /* links, selected channel, accent text */
+    --accent-2: hsl(199, 90%, 72%);
+    --accent-3: hsl(199, 60%, 40%);  /* accent buttons */
+    --accent-4: hsl(199, 60%, 34%);
+    --accent-5: hsl(199, 60%, 28%);
+    --accent-new: var(--accent-2);
+    --mention: hsl(var(--yellow-300-hsl)/0.08);
+    --mention-hover: #bde6fb15;
+
+    --border-light: var(--hover);
+    --border: var(--active);
+}

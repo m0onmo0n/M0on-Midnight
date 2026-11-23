@@ -34,7 +34,7 @@ IMPORT = re.compile(r"^@import[^\n]*\n", re.M)
 HEADER = """/**
  * @name {name}
  * @description {description}
- * @author m0onmo0n
+ * @author {author}
  * @version 2
  * @website https://github.com/m0onmo0n/M0on-Midnight
 */"""
@@ -60,11 +60,33 @@ def upstream_variables():
     return css.replace(UPSTREAM_IMPORT, '').strip()
 
 
-def additions(hsl):
+def additions(flavor):
+    """addons/m0on.css (shared) followed by the flavour's own files (palette, cards look)."""
     css = read('addons/m0on.css')
-    if not hsl:
+    if not flavor['hsl']:
         css = HSL_VARS.sub('', HSL_IMPORT.sub('', css))
+    for part in flavor['parts']:
+        css += '\n' + read(part)
     return css
+
+
+# the flavours: the only difference between them is the colouring (and, for sky, the cards look)
+CARD_SETTINGS = """    --card-radius: 10px; /* corner rounding of message cards */
+    --card-gap: 10px; /* space between message groups */
+    --card-bg: var(--bg-2); /* card colour */
+    --chat-panel-opacity: 55%; /* how solid the chat panel behind the cards is (100% = opaque) */"""
+
+FLAVORS = {
+    'zelk': dict(title='M0on Midnight Zelk palette', hsl=True, author='m0onmo0n',
+                 description='Zelk palette on upstream midnight with the horizontal server list. No small user panel.',
+                 parts=['addons/palette-zelk.css'], extra=''),
+    'midnight': dict(title='M0on Midnight', hsl=True, author='m0onmo0n',
+                     description='The original custom midnight colours on upstream midnight with the horizontal server list. No small user panel.',
+                     parts=['addons/palette-midnight.css'], extra=''),
+    'sky': dict(title="Sky and M0on's Midnight Cards", hsl=False, author='m0onmo0n, Sky Guy 1',
+                description="Cards look with Sky Guy 1's colours and extras on upstream midnight. Vertical server list. No small user panel.",
+                parts=['addons/palette-midnight.css', 'overlays/cards.css', 'overlays/sky.css'], extra=CARD_SETTINGS),
+}
 
 
 # ---------- reading and changing upstream's variable file ----------
@@ -149,65 +171,81 @@ def apply_values(theme_css, overrides):
 SINGLE_VALUES = {'--small-user-panel': 'off'}  # values for this build only
 
 
-def build_single():
+def file_names(name, flavor):
+    single = f"m0on-{name}-single{'-hsl' if flavor['hsl'] else ''}.theme.css"
+    return single, f'm0on-{name}-variables.theme.css'
+
+
+def build_single(name):
+    flavor = FLAVORS[name]
     theme, changed = apply_values(upstream_variables(), SINGLE_VALUES)
     imports, body = [], [theme]
     for m in UPSTREAM_MODULES:
         got, rest = take_imports(read(f'upstream/{m}.css'))
         imports += got
         body.append(rest.strip())
-    # the horizontal server list goes after upstream's rules, like the @import in the Quick CSS did
-    body.append('/* ===== horizontal server list (DiscordStyles/HorizontalServerList, src/main.css) ===== */\n' + read('upstream/hsl.css').strip())
-    got, rest = take_imports(additions(True))
+    if flavor['hsl']:
+        # the horizontal server list goes after upstream's rules, like the @import in the Quick CSS did
+        body.append('/* ===== horizontal server list (DiscordStyles/HorizontalServerList, src/main.css) ===== */\n' + read('upstream/hsl.css').strip())
+    got, rest = take_imports(additions(flavor))
     imports += [i for i in got if 'HorizontalServerList' not in i]
     body.append(rest.strip())
-    name = 'M0on Midnight Zelk palette, one file HSL'
-    out = (HEADER.format(name=name, description='Upstream midnight and the horizontal server list inlined, plus our additions. No small user panel.')
+    title = flavor['title'] + (', one file HSL' if flavor['hsl'] else ', one file')
+    out = (HEADER.format(name=title, author=flavor['author'], description=flavor['description'])
            + '\n\n' + '\n'.join(unique(imports)) + '\n\n' + '\n\n'.join(body) + '\n')
-    dest = ROOT / 'dev' / 'src' / 'm0on-midnight-single-hsl.theme.css'
+    dest = ROOT / 'dev' / 'flavors' / name / 'src' / file_names(name, flavor)[0]
+    dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(out, encoding='utf8')
     return dest, changed
 
 
 # ---------- the variables file: just the settings, and an @import of the one-file theme ----------
 
-# where the one-file theme is served from. jsDelivr serves it as text/css; a branch is cached for about 12 hours, so for a
+# where the one-file themes are served from. jsDelivr serves them as text/css; a branch is cached for about 12 hours, so for a
 # change to show at once replace the branch name with a commit id.
-MEGA_URL = 'https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@clean-build/dev/src/m0on-midnight-single-hsl.theme.css'
+CDN = 'https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@clean-build/dev/flavors'
+
+HSL_SETTINGS = """    --HSL-server-direction: column; /* column, column-reverse */
+    --HSL-server-alignment: flex-start; /* flex-start, center, flex-end */
+"""
 
 EXTRA_SETTINGS = """/* more settings from our additions */
-:root {
-    --HSL-server-direction: column; /* column, column-reverse */
-    --HSL-server-alignment: flex-start; /* flex-start, center, flex-end */
-    --ping-colour: var(--yellow-2); /* colour of channels and DMs where you were pinged */
+:root {{
+{hsl}{cards}    --ping-colour: var(--yellow-2); /* colour of channels and DMs where you were pinged */
     --server-pill-unread: #cd664c; /* server pill: unread */
     --server-pill-ping: #e0b64f; /* server pill: ping */
     --server-pill-selected: #89b482; /* server pill: the open server */
-}
-body {
+}}
+body {{
     --fancy-unread-pills: on; /* on: yellow pings and coloured server pills (needs the ServerPillColorizer plugin for the pills), off: the old behaviour */
-}"""
+}}"""
 
 
-def build_variables():
+def build_variables(name):
     """A small theme file: the settings you can change, with our values, and an @import of the one-file theme.
 
     The settings come after the import, so they win over the same settings inside the one-file theme."""
-    overrides, _ = split_overrides(additions(True), theme_variable_names(upstream_variables()))
+    flavor = FLAVORS[name]
+    single, variables = file_names(name, flavor)
+    overrides, _ = split_overrides(additions(flavor), theme_variable_names(upstream_variables()))
     overrides.update(SINGLE_VALUES)  # the one-file theme has the small user panel off
     theme, changed = apply_values(upstream_variables(), overrides)
-    out = (HEADER.format(name='M0on Midnight variables',
-                         description='The settings for the M0on Midnight one-file theme. Change a value here; the theme itself is imported.')
-           + "\n\n/* the theme: upstream midnight + the horizontal server list + our additions, all in one file */\n@import url('"
-           + MEGA_URL + "');\n\n/* ===== settings: upstream's variables with our values (the old value is noted after each change) ===== */\n"
-           + theme + '\n\n' + EXTRA_SETTINGS + '\n')
-    dest = ROOT / 'dev' / 'dist' / 'm0on-midnight-variables.theme.css'
+    extra = EXTRA_SETTINGS.format(hsl=HSL_SETTINGS if flavor['hsl'] else '',
+                                  cards=(flavor['extra'] + '\n') if flavor['extra'] else '')
+    out = (HEADER.format(name=flavor['title'] + ' variables', author=flavor['author'],
+                         description='The settings for the ' + flavor['title'] + ' one-file theme. Change a value here; the theme itself is imported.')
+           + "\n\n/* the theme: upstream midnight + our additions, all in one file */\n@import url('"
+           + f'{CDN}/{name}/src/{single}' + "');\n\n/* ===== settings: upstream's variables with our values (the old value is noted after each change) ===== */\n"
+           + theme + '\n\n' + extra + '\n')
+    dest = ROOT / 'dev' / 'flavors' / name / 'dist' / variables
+    dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(out, encoding='utf8')
     return dest, len(changed)
 
 
 if __name__ == '__main__':
-    d, n = build_variables()
-    print(f'wrote {d.relative_to(ROOT)} ({d.stat().st_size} bytes), {n} values changed')
-    d, changed = build_single()
-    print(f'wrote {d.relative_to(ROOT)} ({d.stat().st_size} bytes), values changed here: {", ".join(changed)}')
+    for flavor_name in FLAVORS:
+        d, n = build_variables(flavor_name)
+        print(f'wrote {d.relative_to(ROOT)} ({d.stat().st_size} bytes), {n} values changed')
+        d, _ = build_single(flavor_name)
+        print(f'wrote {d.relative_to(ROOT)} ({d.stat().st_size} bytes)')

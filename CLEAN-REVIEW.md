@@ -1,7 +1,17 @@
 # Clean build: what we add on top of upstream midnight
 
-Upstream midnight (refact0r) is vendored in `upstream/` (see `upstream/VERSION.txt`). Everything we add lives in
-**one file, `addons/m0on.css`**. `python build_clean.py` builds the one-file theme into `dev/src/m0on-midnight-single-hsl.theme.css` and the settings file into `dev/dist/m0on-midnight-variables.theme.css`.
+Upstream midnight (refact0r) is vendored in `upstream/` (see `upstream/VERSION.txt`). What every flavour shares lives in
+**`addons/m0on.css`**; each flavour adds its palette (`addons/palette-zelk.css`, `addons/palette-midnight.css`) and, for sky, the cards look
+(`overlays/cards.css`, `overlays/sky.css`). `python build_clean.py` builds, for each flavour, a one-file theme in `dev/flavors/<name>/src/`
+and a settings file in `dev/flavors/<name>/dist/` (the file to enable; it imports the one-file theme).
+
+| Flavour | Colours | Layout | One-file theme |
+|---|---|---|---|
+| zelk | Zelk palette | horizontal server list | `m0on-zelk-single-hsl.theme.css` |
+| midnight | the original custom midnight colours | horizontal server list | `m0on-midnight-single-hsl.theme.css` |
+| sky | Sky Guy 1's colours, cards look | vertical server list | `m0on-sky-single.theme.css` |
+
+Sky keeps its own `:has()` rules (cards rounding, muted states, avatars); it is a flavour for a friend, not one we run. The shared rules stay `:has()`-free.
 
 What was tried and thrown out on purpose is listed below; the code is in git history (`git show 113ee72:addons/_dropped.css`). The earlier split of these files is in git history (commit 113ee72, `addons/_old/`).
 
@@ -53,5 +63,5 @@ Hovering a server pill and switching servers felt slow. Test files with parts re
 (selected-server pill, yellow channel pings, yellow DM pings). A `:has()` rule is re-checked whenever something inside its element changes, and
 that cost stays even when the rule sits in a closed `@container`, so `--fancy-unread-pills: off` did not help. The rules now read plain attributes
 (`data-server-unread`, `data-channel-ping`, `data-dm-ping`) that the ServerPillColorizer plugin stamps, and the selected pill uses its own `selected_`
-class. `python tools/audit.py addons/m0on.css` reports how many `:has(` are left; keep it at 0.
+class. `python tools/audit.py addons/*.css` reports how many `:has(` are left; keep it at 0.
 The restyle benchmarks (BENCH, BENCH2) did not predict this; hover latency and server switching were the real test.
