@@ -3,10 +3,10 @@
 
     python build_clean.py
 
-Writes into clean/:
-  m0on-midnight-single-hsl.theme.css  ONE FILE: upstream source + the horizontal server list inlined + our additions
+Writes:
+  src/m0on-midnight-single-hsl.theme.css   ONE FILE: upstream source + the horizontal server list inlined + our additions
                                       (no @import of either, no small user panel)
-  m0on-midnight-variables.theme.css   just the settings + an @import of the one-file theme above (this is the file to enable)
+  dist/m0on-midnight-variables.theme.css   just the settings + an @import of the one-file theme above (this is the file to enable)
 
 addons/m0on.css is the one file that holds everything we add on top of upstream: settings, the Zelk palette, snippets.
 What was tried and thrown out on purpose is in CLEAN-REVIEW.md (the code is in git history).
@@ -164,7 +164,7 @@ def build_single():
     name = 'M0on Midnight Zelk palette, one file HSL'
     out = (HEADER.format(name=name, description='Upstream midnight and the horizontal server list inlined, plus our additions. No small user panel.')
            + '\n\n' + '\n'.join(unique(imports)) + '\n\n' + '\n\n'.join(body) + '\n')
-    dest = ROOT / 'clean' / 'm0on-midnight-single-hsl.theme.css'
+    dest = ROOT / 'src' / 'm0on-midnight-single-hsl.theme.css'
     dest.write_text(out, encoding='utf8')
     return dest, changed
 
@@ -173,7 +173,7 @@ def build_single():
 
 # where the one-file theme is served from. jsDelivr serves it as text/css; a branch is cached for about 12 hours, so for a
 # change to show at once replace the branch name with a commit id.
-MEGA_URL = 'https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@clean-build/clean/m0on-midnight-single-hsl.theme.css'
+MEGA_URL = 'https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@clean-build/src/m0on-midnight-single-hsl.theme.css'
 
 EXTRA_SETTINGS = """/* more settings from our additions */
 :root {
@@ -201,7 +201,7 @@ def build_variables():
            + "\n\n/* the theme: upstream midnight + the horizontal server list + our additions, all in one file */\n@import url('"
            + MEGA_URL + "');\n\n/* ===== settings: upstream's variables with our values (the old value is noted after each change) ===== */\n"
            + theme + '\n\n' + EXTRA_SETTINGS + '\n')
-    dest = ROOT / 'clean' / 'm0on-midnight-variables.theme.css'
+    dest = ROOT / 'dist' / 'm0on-midnight-variables.theme.css'
     dest.write_text(out, encoding='utf8')
     return dest, len(changed)
 

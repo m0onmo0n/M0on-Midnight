@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Makes the feel-test files in clean/feel-tests/: the one-file theme with one thing taken out, to find what makes Discord feel slower.
+"""Makes the feel-test files in feel-tests/: the one-file theme with one thing taken out, to find what makes Discord feel slower.
 
     python tools/feel.py
 
@@ -76,7 +76,7 @@ def assemble(skip=None, strip_upstream_has=False, strip_our_has=None):
 
 
 def main():
-    out = ROOT / 'clean' / 'feel-tests'
+    out = ROOT / 'feel-tests'
     out.mkdir(parents=True, exist_ok=True)
     full = assemble()
     files = {'feel-0-control': full,
