@@ -185,8 +185,8 @@ span[class*="botTag"]:not([class*="botTagAi"], [class*="botTagCozy"], [class*="b
 }
 /* ===== FANCY UNREAD PILLS =====
    on:  channels and DMs with a ping turn yellow, server and folder pills are coloured (red unread, yellow ping, green selected)
-   off: the old behaviour: no ping colour, Discord's own white server pills. The ServerPillColorizer plugin also stops working
-        when this is off (it checks the variable), so the lag it can cause goes away too. */
+        (the pings and the unread/ping pills need the ServerPillColorizer plugin; the green selected pill does not)
+   off: the old behaviour: no ping colour, Discord's own white server pills. The plugin also stops working when this is off. */
 @property --fancy-unread-pills {
     syntax: 'on | off';
     inherits: false;
@@ -203,27 +203,30 @@ body {
 }
 
 @container body style(--fancy-unread-pills: on) {
-    /* server channels where you were mentioned (Discord's own mention badge, no plugin needed) */
-    [class*="containerDefault_"] [class*="wrapper_"]:not([class*="modeSelected_"]):has([class*="numberBadge_"]) [class*="name_"],
-    [class*="containerDefault_"] [class*="wrapper_"]:not([class*="modeSelected_"]):has([class*="numberBadge_"]) [class*="icon_"] {
-        color: var(--ping-colour) !important;
-    }
-    /* DMs with a real mention or reply turn yellow (needs the plugin, which sets data-dm-ping); an ordinary unread DM stays red */
-    [class*="privateChannels_"] [class*="channel_"][data-dm-ping="true"]:not(:has([class*="interactiveSelected_"])) :is([class*="name_"], [class*="innerContainer_"], [class*="subText_"], svg[class*="pin"]) {
-        color: var(--ping-colour) !important;
-    }
-    /* server pills (the plugin stamps data-server-unread="unread|ping" on server and folder items) */
-    /* selected server = green; unread and ping below still win via specificity */
-    :where([class*="listItem_"]:has([aria-selected="true"])) > [aria-hidden="true"] > [class*="item_"] {
+    /* No :has() anywhere in here: every :has() rule has to be re-checked whenever something inside its element changes,
+       which made hovering a server and switching servers feel slow. The plugin stamps plain attributes instead. */
+
+    /* selected server = green: the pill carries a "selected" class itself. It comes first so unread/ping below win. */
+    [aria-hidden="true"] > [class*="item_"][class*="selected_"] {
         background: var(--server-pill-selected) !important;
     }
+    /* server pills (the plugin stamps data-server-unread="unread|ping" on server and folder items) */
     [data-server-unread="unread"] > [aria-hidden="true"] > [class*="item_"] {
         background: var(--server-pill-unread) !important;
     }
     [data-server-unread="ping"] > [aria-hidden="true"] > [class*="item_"] {
         background: var(--server-pill-ping) !important;
     }
+    /* channels where you were mentioned (the plugin stamps data-channel-ping on the channel row) */
+    [data-channel-ping="true"] :is([class*="name_"], [class*="icon_"]) {
+        color: var(--ping-colour) !important;
+    }
+    /* DMs with a real mention or reply (the plugin stamps data-dm-ping); an ordinary unread DM stays red */
+    [data-dm-ping="true"] :is([class*="name_"], [class*="innerContainer_"], [class*="subText_"], svg[class*="pin"]) {
+        color: var(--ping-colour) !important;
+    }
 }
+
 /* === Unclamp User Bios (by myself) === */
 [class*="descriptionClamp_"]:not(.headerText_SOY5H6 [class*="descriptionClamp_"]) {
 -webkit-line-clamp: unset;
