@@ -7,7 +7,7 @@
 */
 
 /* the theme: upstream midnight + the horizontal server list + our additions, all in one file */
-@import url('https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@clean-build/src/m0on-midnight-single-hsl.theme.css');
+@import url('https://cdn.jsdelivr.net/gh/m0onmo0n/M0on-Midnight@clean-build/dev/src/m0on-midnight-single-hsl.theme.css');
 
 /* ===== settings: upstream's variables with our values (the old value is noted after each change) ===== */
 /* import theme modules */

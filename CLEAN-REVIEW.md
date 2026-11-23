@@ -1,7 +1,7 @@
 # Clean build: what we add on top of upstream midnight
 
 Upstream midnight (refact0r) is vendored in `upstream/` (see `upstream/VERSION.txt`). Everything we add lives in
-**one file, `addons/m0on.css`**. `python build_clean.py` builds the one-file theme into `src/m0on-midnight-single-hsl.theme.css` and the settings file into `dist/m0on-midnight-variables.theme.css`.
+**one file, `addons/m0on.css`**. `python build_clean.py` builds the one-file theme into `dev/src/m0on-midnight-single-hsl.theme.css` and the settings file into `dev/dist/m0on-midnight-variables.theme.css`.
 
 What was tried and thrown out on purpose is listed below; the code is in git history (`git show 113ee72:addons/_dropped.css`). The earlier split of these files is in git history (commit 113ee72, `addons/_old/`).
 
